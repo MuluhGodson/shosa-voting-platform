@@ -26,7 +26,7 @@
                             <h1 class="text-center text-lg text-secondary font-bold uppercase">
                                 {{ $contest->name }}
                             </h1>
-                            <p class="text-gray-400 text-center">{{ Str::words($contest->description,15,'...') }}
+                            <p class="text-gray-400 text-center">{{ Str::words(strip_tags($contest->description),15,'...') }}
                         </div>
                     </div>
                     <div>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
                             <p class="pt-8 text-sm  text-justify">
-                                {{ Str::words($description, $text_words , '...') }}
+                                {{ Str::words(strip_tags($description),$text_words,'...') }}
                                 @if(!$showText)
                                     <button wire:click="openText('{{ $slug }}','y')" class="bg-transparent text-secondary font-bold">See all</button>
                                 @else
