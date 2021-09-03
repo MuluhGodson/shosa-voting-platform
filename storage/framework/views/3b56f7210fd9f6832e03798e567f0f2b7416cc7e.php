@@ -1,0 +1,2 @@
+<input type="checkbox" <?php echo $attributes->merge(['class' => 'rounded border-gray-300 text-secondary shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50']); ?>>
+<?php /**PATH /var/www/shosa/resources/views/vendor/jetstream/components/checkbox.blade.php ENDPATH**/ ?>
