@@ -40,19 +40,25 @@ class PageController extends Controller
        
         $calendar = new Calendar();
         $i = count($contests);
-        for($j = 0; $j < $i; $j++)
+        if($i > 0)
         {
-            $events[] = $calendar::event(
-                $cName[$j], //event title
-                true, //full day event?
-                $cbDate[$j], //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-                $ceDate[$j], //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                1, //optional event ID
-                [
-                    'url' => route('contest.index')
-                ]
-            );
+            for($j = 0; $j < $i; $j++)
+            {
+                $events[] = $calendar::event(
+                    $cName[$j], //event title
+                    true, //full day event?
+                    $cbDate[$j], //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                    $ceDate[$j], //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                    1, //optional event ID
+                    [
+                        'url' => route('contest.index')
+                    ]
+                );
+            }
+        } else {
+            $events = [];
         }
+       
         $calendar->addEvents($events);
         $calendar->setId('1');
 
