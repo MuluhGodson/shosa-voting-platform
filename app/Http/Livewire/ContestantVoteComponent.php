@@ -89,11 +89,12 @@ class ContestantVoteComponent extends Component
         {
             $this->vote_amount = '';
         } else{
-            $vm = (int)currency($this->vote_amount, $from = $this->currency, $to = $this->contest->currency, $format = false);
+            $vm = (int)currency(preg_replace('/,/', '',$this->vote_amount), $from = $this->currency, $to = $this->contest->currency, $format = false);
             $vc = ($vm / (int)$this->contest->vote_fee) * (int)$this->contest->vote_count;
             $this->vote_count = (int)$vc;
             $this->vote_fee = $this->vote_amount;
             $this->currency_symbol = currency_format($this->vote_amount, $code = $this->currency);
+            //dd($this->currency_symbol);
         }
         
     }
@@ -104,11 +105,12 @@ class ContestantVoteComponent extends Component
         {
             $this->vote_amount = '';
         } else{
-            $vm = (int)currency($this->vote_amount, $from = $this->currency, $to = $this->contest->currency, $format = false);
+            $vm = (int)currency(preg_replace('/,/', '',$this->vote_amount), $from = $this->currency, $to = $this->contest->currency, $format = false);
             $vc = ($vm / (int)$this->contest->vote_fee) * (int)$this->contest->vote_count;
             $this->vote_count = (int)$vc;
             $this->vote_fee = $this->vote_amount;
             $this->currency_symbol = currency_format($this->vote_amount, $code = $this->currency);
+            //dd($this->currency_symbol);
         }
         
     }

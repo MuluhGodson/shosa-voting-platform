@@ -83,7 +83,7 @@ class ContestantApplicationComponent extends Component
         ]);
 
         $coverExt = $this->cover->getClientOriginalExtension();
-        $coverName = Str::random(10).$coverExt;
+        $coverName = Str::random(10).'.'.$coverExt;
         $this->coverPath = $this->cover->storePubliclyAs('Contest/Candidates', $coverName, ['disk' => 'public']);
         
         if($this->contest->fee)

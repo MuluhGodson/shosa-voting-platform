@@ -10,7 +10,9 @@ class VoteController extends Controller
 {
     public function index()
     {
-        return view('user.vote.index');   
+        $contest = Contest::where('active',true)->first();
+        return view('user.vote.show', compact('contest'));
+        //return view('user.vote.index');   
     }
 
     public function show(Contest $contest)

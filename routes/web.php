@@ -20,8 +20,8 @@ use App\Http\Controllers\CandidateController;
 Route::domain('vote.'.config('app.domain'))->group(function () {
     //Route::get('/', [PageController::class, 'welcome'])->name('welcome');
     Route::get('/', [VoteController::class, 'index'])->name('welcome');
-    Route::get('/apply', [PageController::class, 'apply'])->name('apply');
-    Route::get('/apply/{contest}', [PageController::class, 'application'])->name('candidate.apply');
+    Route::get('/apply', [PageController::class, 'apply'])->name('apply'); //If enabling the route below change this route name to simply apply.
+    //Route::get('/apply/{contest}', [PageController::class, 'application'])->name('candidate.apply');
     Route::get('/vote', [VoteController::class, 'index'])->name('vote');
     Route::get('/vote/{contest}', [VoteController::class, 'show'])->name('vote.candidate');
 

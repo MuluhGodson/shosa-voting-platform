@@ -17,11 +17,11 @@
         <h1 class="text-center text-xl md:text-4xl text-gray-300"> Vote your favorite contestant for <span class="text-secondary uppercase font-bold">{{ $contest->name }}</span> </h1>
     </div>
     <div class="my-4">
-        <div class="grid sm:grid-cols-4 gap-4">
+        <div class="grid sm:grid-cols-3 gap-4">
             @forelse ($contest->candidates as $cand)
                 <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000" class="shadow-lg rounded transition hover:px-1 duration-500 ease-in-out  col hover:border-r-2 hover:boder-r-white hover:border-l-2 hover:border-l-secondary cursor-pointer hover:transform hover:scale-150">
                     <div wire:click="openCandidate('{{ $cand->slug }}')">
-                        <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-60 w-full rounded-md" alt="{{$cand->name}}">
+                        <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-full w-full rounded-md" alt="{{$cand->name}}">
                         <div class="my-1 flex justify-center gap-4 py-1 px-1">
                             <p class="text-sm text-gray-400"><i class="fas fa-birthday-cake"></i> {{ $cand->dob }}</p>
                             <p class="text-sm text-gray-400"><i class="fas fa-city"></i> {{ $cand->town }}</p>
@@ -174,7 +174,7 @@
         @if($vote_payment)
             <x-jet-dialog-modal wire:model="vote_payment">
                 <x-slot name="title">
-                    Voting Fee <span class="text-secondary">{{ $currency_symbol}} for {{ $vote_count }} vote(s)</span>
+                    Voting Fee <span class="text-secondary">{{ $vote_amount }} {{ $currency }} for {{ number_format((int)$vote_count) }} vote(s)</span>
                 </x-slot>
 
                 <x-slot name="content">
@@ -281,7 +281,7 @@
                 <x-slot name="footer">
                     @if(($isLocal || $isIntl) && !$payStatus)
                        <x-jet-button class="ml-2" wire:click="initiatePay()" wire:loading.class="bg-transparent">
-                            Pay {{ $currency_symbol }}
+                            Pay {{ $vote_amount }} {{ $currency }}
                             <div wire:loading wire:target="initiatePay">
                                 <img width="20px" src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
                             </div>

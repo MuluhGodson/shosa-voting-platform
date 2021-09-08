@@ -108,7 +108,7 @@ class CandidateComponent extends Component
         {
             $this->validate(['cover' => 'required|image']);
             $coverExt = $this->cover->getClientOriginalExtension();
-            $coverName = Str::random(10).$coverExt;
+            $coverName = Str::random(10).'.'.$coverExt;
             $this->coverPath = $this->cover->storePubliclyAs('Contest/Candidates', $coverName, ['disk' => 'public']);
         } else {
             $this->coverPath = $candidate->photo;

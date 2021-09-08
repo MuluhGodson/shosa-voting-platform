@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl sm:w-full mx-auto sm:px-6 lg:px-8 p-4">
+        <div class="w-full mx-auto p-4">
             <div class="overflow-hidden sm:rounded-lg">
                 <livewire:contestant-vote-component :contest="$contest" />
             </div>

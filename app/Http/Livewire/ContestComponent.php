@@ -132,7 +132,7 @@ class ContestComponent extends Component
 
 
         $coverExt = $this->cover->getClientOriginalExtension();
-        $coverName = Str::random(10).$coverExt;
+        $coverName = Str::random(10).'.'.$coverExt;
         $coverPath = $this->cover->storePubliclyAs('Contest/Images', $coverName, ['disk' => 'public']);
 
 
@@ -176,7 +176,7 @@ class ContestComponent extends Component
         if($this->cover){
             $this->validate(['cover' => 'image']);
             $coverExt = $this->cover->getClientOriginalExtension();
-            $coverName = Str::random(10).$coverExt;
+            $coverName = Str::random(10).'.'.$coverExt;
             $coverPath = $this->cover->storePubliclyAs('Contest/Images', $coverName, ['disk' => 'public']);
         }
         else {
