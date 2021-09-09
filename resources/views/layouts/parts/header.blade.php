@@ -3,9 +3,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta property="og:title" content="SHOSA VOTING PLATFORM" />
-    <meta property="og:description" content="Vote for your favorite contestants on the Shosa Voting Platform." />
-    <meta property="og:image" content="{{ asset('images/logo/mffa.png') }}" />
+    
+    <!-- HTML Meta Tags -->
+    <meta name="description" content="Vote for your favorite contestants on the Shosa Voting Platform. Brought to you by the Shosa Empire - Culture of Excellence. Shosa Empire is a Socioeconomic development organization that empowers communities through innovative programs and events. It operates exclusively for educational and formational purposes.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://vote.shosaempire.org/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SHOSA VOTING PLATFORM">
+    <meta property="og:description" content="Vote for your favorite contestants on the Shosa Voting Platform. Brought to you by the Shosa Empire - Culture of Excellence. Shosa Empire is a Socioeconomic development organization that empowers communities through innovative programs and events. It operates exclusively for educational and formational purposes.">
+    <meta property="og:image" content="{{ asset('images/logo/mffa.png') }}">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="vote.shosaempire.org">
+    <meta property="twitter:url" content="https://vote.shosaempire.org/">
+    <meta name="twitter:title" content="SHOSA VOTING PLATFORM">
+    <meta name="twitter:description" content="Vote for your favorite contestants on the Shosa Voting Platform. Brought to you by the Shosa Empire - Culture of Excellence. Shosa Empire is a Socioeconomic development organization that empowers communities through innovative programs and events. It operates exclusively for educational and formational purposes.">
+    <meta name="twitter:image" content="{{ asset('images/logo/mffa.png') }}">
+
+    <!-- Meta Tags Generated via https://www.opengraph.xyz -->
+      
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
