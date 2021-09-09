@@ -1,2 +1,2 @@
-<img src="{{ asset('images/logo/logo.png') }}" width="100px" alt="Shosa Logo">
+<img src="{{ asset('images/logo/mffa.png') }}" width="100px" alt="Shosa Logo">
 
