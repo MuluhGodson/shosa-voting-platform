@@ -49,7 +49,7 @@ class CandidateComponent extends Component
         $this->viewCandidate = true;
     }
 
-    public function openText(Candidate $candidate,$type)
+   /* public function openText(Candidate $candidate,$type)
     {
         $this->bio = $candidate->bio;
         if($type == 'y')
@@ -63,14 +63,14 @@ class CandidateComponent extends Component
             $this->text_words = 50;
             
         }
-    }
+    }*/
 
     public function openEdit(Candidate $candidate)
     {
         $this->viewCandidate = false;
         $this->slug = $candidate->slug;
         $this->name = $candidate->name;
-        $this->bio = $candidate->bio;
+        /*$this->bio = $candidate->bio;
         $this->email = $candidate->email;
         $this->division = $candidate->division_id;
         $this->tel = $candidate->tel;
@@ -81,7 +81,7 @@ class CandidateComponent extends Component
         $this->profession = $candidate->profession;
         $this->facebook = $candidate->fb_link;
         $this->instagram = $candidate->ig_link;
-        $this->twitter = $candidate->twitter_link;
+        $this->twitter = $candidate->twitter_link;*/
         $this->editCandidate = true;
     }
 
@@ -89,7 +89,7 @@ class CandidateComponent extends Component
     {
         $data = $this->validate([
             'name' => 'required',
-            'dob' => 'required',
+            /*'dob' => 'required',
             'email' => 'required|email',
             'gender' => 'required',
             'profession' => 'required',
@@ -101,7 +101,7 @@ class CandidateComponent extends Component
             'town' => 'required',
             'instagram' => 'sometimes',
             'facebook' => 'sometimes',
-            'twitter' => 'sometimes'
+            'twitter' => 'sometimes'*/
         ]);
 
         if($this->cover)
@@ -115,7 +115,8 @@ class CandidateComponent extends Component
         }
         
         $candidate->name = $data['name'];
-        $candidate->email = $data['email'];
+        $candidate->photo = $this->coverPath;
+        /*$candidate->email = $data['email'];
         $candidate->sex = $data['gender'];
         $candidate->tel = $data['tel'];
         $candidate->height = $data['height'].$data['h_unit'];
@@ -123,11 +124,10 @@ class CandidateComponent extends Component
         $candidate->dob = $data['dob'];
         $candidate->town = $data['town'];
         $candidate->bio = $data['bio'];
-        $candidate->photo = $this->coverPath;
         $candidate->division_id = $data['division'];
         if($data['instagram']) $candidate->ig_link = $data['instagram'];
         if($data['facebook']) $candidate->fb_link = $data['facebook'];
-        if($data['twitter']) $candidate->twitter_link = $data['twitter'];
+        if($data['twitter']) $candidate->twitter_link = $data['twitter'];*/
         $candidate->save();
         $this->editCandidate = false;
 

@@ -19,8 +19,9 @@ class PageController extends Controller
     public function apply()
     {
         $contest = Contest::where('active',true)->first();
+        if(!$contest) return view('user.application.index');
         return view('user.application.apply', compact('contest'));
-        //return view('user.application.index');
+        //
     }
 
     public function application(Contest $contest)

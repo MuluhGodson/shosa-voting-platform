@@ -1,9 +1,11 @@
 <div>
     <div class="p-4">
         <div>
-            <x-jet-button wire:click="openCreate">
-                {{__('Create Contest') }}
-            </x-jet-button>
+            @can('create_contest')
+                <x-jet-button wire:click="openCreate">
+                    {{__('Create Contest') }}
+                </x-jet-button>
+            @endcan
         </div>
     </div>
 

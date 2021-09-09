@@ -11,8 +11,9 @@ class VoteController extends Controller
     public function index()
     {
         $contest = Contest::where('active',true)->first();
+        if(!$contest) return view('user.vote.index'); 
         return view('user.vote.show', compact('contest'));
-        //return view('user.vote.index');   
+        //  
     }
 
     public function show(Contest $contest)
@@ -23,6 +24,7 @@ class VoteController extends Controller
     public function statistics()
     {
         $contest = Contest::where('active',true)->first();
+        if(!$contest) return redirect(route('dashboard'));
         return view('admin.contest.statistics', compact('contest')); 
     }
 }

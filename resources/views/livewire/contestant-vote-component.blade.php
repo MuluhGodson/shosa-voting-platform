@@ -26,16 +26,16 @@
                 <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000" class="shadow-lg rounded transition hover:px-1 duration-500 ease-in-out  col hover:border-r-2 hover:boder-r-white hover:border-l-2 hover:border-l-secondary cursor-pointer hover:transform hover:scale-150">
                     <div wire:click="openCandidate('{{ $cand->slug }}')">
                         <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-full w-full rounded-md" alt="{{$cand->name}}">
-                        <div class="my-1 flex justify-center gap-4 py-1 px-1">
+                        {{--<div class="my-1 flex justify-center gap-4 py-1 px-1">
                             <p class="text-sm text-gray-400"><i class="fas fa-birthday-cake"></i> {{ $cand->dob }}</p>
                             <p class="text-sm text-gray-400"><i class="fas fa-city"></i> {{ $cand->town }}</p>
-                        </div>
+                        </div>--}}
                         <div class="p-2 my-1">
                             <h1 class="text-center text-lg text-secondary font-bold uppercase">
                                 <span class="font-bold text-gray-200">#{{ $cand->pivot->candidate_number }}</span>
                                 {{ $cand->name }}
                             </h1>
-                            <p class="text-gray-400 text-center">{{ Str::words($cand->bio,5,'...read more') }}
+                            {{--<p class="text-gray-400 text-center"> Str::words($cand->bio,5,'...read more')  }}</p>--}}
                         </div>
                          <!-- Pin to right corner -->
                         <div class="absolute top-0 right-0 h-10 w-18 p-1 bg-secondary text-white">
@@ -78,10 +78,10 @@
                                 <!-- Image for mobile view-->
                                 <div class="block lg:hidden rounded-full shadow-xl object-top mx-auto -mt-16 h-48 w-48 bg-cover bg-center" style="background-image: url('{{Storage::url($candidate->photo)}}')"></div>
                                 
-                                <h1 class="text-xl font-bold pt-8 lg:pt-0 text-secondary text-left uppercase">{{ $candidate->name }} - {{ $candidate->town }}</h1>
+                                <h1 class="text-xl font-bold pt-8 lg:pt-0 text-secondary text-left uppercase">{{ $candidate->name }}</h1>
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
                                 
-                                <div class="text-md text-left">
+                                {{--<div class="text-md text-left">
                                     <p>
                                         Date of Birth: {{ $candidate->dob }}
                                     </p>
@@ -95,16 +95,16 @@
                                         Profession: {{ $candidate->profession }}
                                     </p>
                                    
-                                </div>
+                                </div>--}}
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
-                                <p class="pt-8 text-sm">
+                                {{--<p class="pt-8 text-sm">
                                     {{ Str::words($candidate->bio, $text_words , '...') }}
                                     @if(!$showText)
                                         <button wire:click="openText('{{ $candidate->slug }}','y')" class="bg-transparent text-secondary font-bold">See all</button>
                                     @else
                                         <button wire:click="openText('{{ $candidate->slug }}','n')" class="bg-transparent text-secondary font-bold">See less</button>
                                     @endif
-                                </p>
+                                </p>--}}
 
                                 <div class="pt-12 pb-8">
                                     <button wire:click="openVote('{{ $candidate->slug }}')" class="bg-secondary hover:bg-transparent hover:border hover:border-secondary hover:text-secondary text-white font-bold py-2 px-4 rounded-full">
@@ -134,7 +134,7 @@
                         </div>
 
                         <!-- Pin to left corner -->
-                        @if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
+                        {{--@if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
                         <div class="absolute top-0 left-0 h-10 w-18 p-1 text-white">
                             <div class="flex justify-center gap-1 text-sm p-2">
                                 @if($candidate->fb_link)
@@ -148,7 +148,7 @@
                                 @endif
                             </div>
                         </div>
-                        @endif
+                        @endif--}}
                         
 
                     </div>

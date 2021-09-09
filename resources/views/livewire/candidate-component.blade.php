@@ -14,15 +14,15 @@
                     <div wire:click="openCandidate('{{ $cand->slug }}')">
                         <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-60 w-full" alt="{{$cand->name}}">
                         <div class="my-1 flex justify-center gap-4 py-1 px-1">
-                            <p class="text-sm text-gray-400"><i class="fas fa-birthday-cake"></i> {{ $cand->dob }}</p>
-                            <p class="text-sm text-gray-400"><i class="fas fa-city"></i> {{ $cand->town }}</p>
+                            {{--<p class="text-sm text-gray-400"><i class="fas fa-birthday-cake"></i>  {{ $cand->dob  }}</p>
+                            <p class="text-sm text-gray-400"><i class="fas fa-city"></i> {{ $cand->town }}</p>--}}
                          
                         </div>
                         <div class="p-2 my-1">
                             <h1 class="text-center text-lg text-secondary font-bold uppercase">
                                 <span class="text-gray-300">#{{ $cand->id }}</span> {{ $cand->name }}
                             </h1>
-                            <p class="text-gray-400 text-center">{{ Str::words($cand->bio,15,'...') }}
+                           {{-- <pclass="text-gray-400text-center">Str::words($cand->bio,15,'...') --}}
                         </div>
 
                         
@@ -66,10 +66,10 @@
                                 <!-- Image for mobile view-->
                                 <div class="block lg:hidden rounded-full shadow-xl object-top mx-auto -mt-16 h-48 w-48 bg-cover bg-center" style="background-image: url('{{Storage::url($candidate->photo)}}')"></div>
                                 
-                                <h1 class="text-xl font-bold pt-8 lg:pt-0 text-secondary text-left uppercase">{{ $candidate->name }} - {{ $candidate->town }}</h1>
+                                <h1 class="text-xl font-bold pt-8 lg:pt-0 text-secondary text-left uppercase">{{ $candidate->name }}</h1>
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
                                 
-                                <div class="text-md text-left">
+                               {{-- <div class="text-md text-left">
                                     <p>
                                         Date of Birth: {{ $candidate->dob }}
                                     </p>
@@ -89,16 +89,16 @@
                                         Tel: {{ $candidate->tel }}
                                     </p>
                                    
-                                </div>
+                                </div>--}}
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
-                                <p class="pt-8 text-sm">
-                                    {{ Str::words($candidate->bio, $text_words , '...') }}
+                                 {{--<p class="pt-8 text-sm">
+                                   {{ Str::words($candidate->bio, $text_words , '...') }}
                                     @if(!$showText)
                                         <button wire:click="openText('{{ $candidate->slug }}','y')" class="bg-transparent text-secondary font-bold">See all</button>
                                     @else
                                         <button wire:click="openText('{{ $candidate->slug }}','n')" class="bg-transparent text-secondary font-bold">See less</button>
                                     @endif
-                                </p>
+                                </p>--}}
 
                                 <div class="pt-12 pb-8">
                                     <a href="" class="bg-secondary hover:bg-transparent hover:border hover:border-secondary hover:text-secondary text-white font-bold py-2 px-4 rounded-full">
@@ -128,7 +128,7 @@
                         </div>
 
                         <!-- Pin to left corner -->
-                        @if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
+                        {{--@if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
                         <div class="absolute top-0 left-0 h-10 w-18 p-1 text-white">
                             <div class="flex justify-center gap-1 text-sm p-2">
                                 @if($candidate->fb_link)
@@ -142,7 +142,7 @@
                                 @endif
                             </div>
                         </div>
-                        @endif
+                        @endif--}}
                         
 
                     </div>
@@ -187,7 +187,7 @@
                 <x-jet-input id="name" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="name" type="text" name="name" :value="old('name')" required />
             </div>
 
-            <div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
+            {{--<div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
                 <div class="mt-2">
                     <x-jet-label class="font-bold" for="currency" value="{{ __('Gender') }}" />
                     <select wire:model="gender" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
@@ -265,7 +265,7 @@
                     <small class="text-gray-500"><i class="fab fa-twitter"></i> Link to your Twitter account </small>
                     <x-jet-input id="twitter" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="twitter" type="text" name="twitter" :value="old('twitter')" required />
                 </div>
-            </div>
+            </div>--}}
 
 
             <div class="my-4">

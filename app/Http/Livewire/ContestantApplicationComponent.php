@@ -66,20 +66,20 @@ class ContestantApplicationComponent extends Component
         $this->candidateNumber = $totCandidates + 1;
         $this->data = $this->validate([
             'name' => 'required',
-            'dob' => 'required',
+           /* 'dob' => 'required',
             'email' => 'required|email',
             'gender' => 'required',
             'profession' => 'required',
-            'tel' => 'required',
+            'tel' => 'required',*/
             'cover' => 'required|image',
-            'division' => 'required',
+            /*'division' => 'required',
             'height' => 'required',
             'h_unit' => 'required',
             'bio' => 'required',
             'town' => 'required',
             'instagram' => 'sometimes',
             'facebook' => 'sometimes',
-            'twitter' => 'sometimes'
+            'twitter' => 'sometimes'*/
         ]);
 
         $coverExt = $this->cover->getClientOriginalExtension();
@@ -102,19 +102,19 @@ class ContestantApplicationComponent extends Component
         {
             $candidate = new Candidate;
             $candidate->name = $data['name'];
-            $candidate->email = $data['email'];
+            /*$candidate->email = $data['email'];
             $candidate->sex = $data['gender'];
             $candidate->tel = $data['tel'];
             $candidate->height = $data['height'].$data['h_unit'];
             $candidate->profession = $data['profession'];
             $candidate->dob = $data['dob'];
             $candidate->town = $data['town'];
-            $candidate->bio = $data['bio'];
+            $candidate->bio = $data['bio'];*/
             $candidate->photo = $this->coverPath;
-            $candidate->division_id = $this->division->id;
+            /*$candidate->division_id = $this->division->id;
             if($data['instagram']) $candidate->ig_link = $data['instagram'];
             if($data['facebook']) $candidate->fb_link = $data['facebook'];
-            if($data['twitter']) $candidate->twitter_link = $data['twitter'];
+            if($data['twitter']) $candidate->twitter_link = $data['twitter'];*/
             $candidate->save();
 
             $serial = 'SHOSA-'.Str::random(7);
@@ -131,19 +131,19 @@ class ContestantApplicationComponent extends Component
         } else {
             $candidate = new Candidate;
             $candidate->name = $data['name'];
-            $candidate->email = $data['email'];
+            /*$candidate->email = $data['email'];
             $candidate->sex = $data['gender'];
             $candidate->tel = $data['tel'];
             $candidate->height = $data['height'].$data['h_unit'];
             $candidate->profession = $data['profession'];
             $candidate->dob = $data['dob'];
             $candidate->town = $data['town'];
-            $candidate->bio = $data['bio'];
+            $candidate->bio = $data['bio'];*/
             $candidate->photo = $this->coverPath;
-            $candidate->division_id = $this->division->id;
+            /*$candidate->division_id = $this->division->id;
             if($data['instagram']) $candidate->ig_link = $data['instagram'];
             if($data['facebook']) $candidate->fb_link = $data['facebook'];
-            if($data['twitter']) $candidate->twitter_link = $data['twitter'];
+            if($data['twitter']) $candidate->twitter_link = $data['twitter'];*/
             $candidate->save();
 
             $serial = 'SHOSA-'.Str::random(7);

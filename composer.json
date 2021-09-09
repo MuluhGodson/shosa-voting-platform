@@ -18,6 +18,7 @@
         "malico/laravel-mesomb": "^1.2",
         "mews/purifier": "^3.3",
         "realrashid/sweet-alert": "^4.0",
+        "spatie/laravel-permission": "^5.1",
         "spatie/laravel-sluggable": "^2.6",
         "torann/currency": "^1.1"
     },

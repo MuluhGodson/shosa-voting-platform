@@ -17,22 +17,22 @@ class CreateCandidatesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->string('email');
-            $table->string('sex');
-            $table->string('tel');
-            $table->date('dob');
-            $table->string('height');
-            $table->string('profession');
-            $table->string('town');
-            $table->text('bio');
-            $table->string('ig_link')->nullable();
-            $table->string('fb_link')->nullable();
-            $table->string('twitter_link')->nullable();
+            //$table->string('email');
+            //$table->string('sex');
+            //$table->string('tel');
+            //$table->date('dob');
+            //$table->string('height');
+            //$table->string('profession');
+            //$table->string('town');
+            //$table->text('bio');
+            //$table->string('ig_link')->nullable();
+            //$table->string('fb_link')->nullable();
+            //$table->string('twitter_link')->nullable();
             $table->string('photo');
-            $table->unsignedBigInteger('division_id');
+            //$table->unsignedBigInteger('division_id');
             $table->timestamps();
 
-            $table->foreign('division_id')->references('id')->on('divisions');
+            //$table->foreign('division_id')->references('id')->on('divisions');
         });
     }
 

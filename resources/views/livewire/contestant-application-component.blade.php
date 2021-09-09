@@ -16,7 +16,7 @@
                 <x-jet-input id="name" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="name" type="text" name="name" :value="old('name')" required />
             </div>
 
-            <div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
+            {{--<div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
                 <div class="mt-2">
                     <x-jet-label class="font-bold" for="currency" value="{{ __('Gender') }}" />
                     <select wire:model="gender" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
@@ -97,7 +97,7 @@
                     <small class="text-gray-500"><i class="fab fa-twitter"></i> Link to your Twitter account </small>
                     <x-jet-input id="twitter" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="twitter" type="text" name="twitter" :value="old('twitter')" required />
                 </div>
-            </div>
+            </div>--}}
 
 
             <div class="my-4">

@@ -28,7 +28,7 @@
                                     </div>
                                     <div>
                                         <div class="text-sm text-secondary">{{$cand->name}}</div>
-                                        <div class="text-sm text-gray-400">{{$cand->email}}</div>
+                                        
                                     </div>
                                 </div>
                             </td>
@@ -43,7 +43,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">
                                 {{ number_format($vote_amount) }} {{ $contest->currency }}
-                            </td>--}}
+                            </td>
                         </tr>
                     @empty
                         No statistics available yet
