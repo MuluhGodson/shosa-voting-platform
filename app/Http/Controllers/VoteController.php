@@ -19,4 +19,10 @@ class VoteController extends Controller
     {
         return view('user.vote.show', compact('contest'));
     }
+
+    public function statistics()
+    {
+        $contest = Contest::where('active',true)->first();
+        return view('admin.contest.statistics', compact('contest')); 
+    }
 }

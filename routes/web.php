@@ -29,6 +29,7 @@ Route::domain('vote.'.config('app.domain'))->group(function () {
         Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
         Route::get('/contest', [ContestController::class, 'index'])->name('contest.index');
         Route::get('/{contest}/candidates', [CandidateController::class, 'index'])->name('candidate.index');
+        Route::get('/statistics', [VoteController::class, 'statistics'])->name('vote.statistics');
 
         Route::get('/finance', [PageController::class, 'finance'])->name('finance.index');
     });

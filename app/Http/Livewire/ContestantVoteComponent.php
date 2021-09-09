@@ -177,7 +177,7 @@ class ContestantVoteComponent extends Component
                 $phone = preg_replace('/\s*/m', '', $this->momo_tel);
                 $type = Network::check($phone);
   
-                $payRequest = new Payment($phone, (int)$this->vote_amount);
+                $payRequest = new Payment($phone, preg_replace('/,/', '',$this->vote_amount));
                 $pay = $payRequest->pay();
                 if($pay->success){
                     $this->payStatus = true;

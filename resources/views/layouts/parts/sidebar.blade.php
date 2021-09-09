@@ -5,7 +5,7 @@
                 <p class="px-5 font-bold"> <i class="fas fa-chart-line"></i> Dashboard</p>
             </div>
         </a>
-        <a href="{{ route('dashboard') }}">
+        <a href="{{ route('vote.statistics') }}">
             <div class="py-5 hover:bg-secondary px-3 rounded-sm cursor-pointer">
                 <p class="px-5 font-bold"> <i class="fas fa-poll"></i> Votes</p>
             </div>
