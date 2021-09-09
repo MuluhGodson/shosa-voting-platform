@@ -36,13 +36,14 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-200">
                                     @php
                                         $vote_number = $cand->votes()->sum('vote_count');
+                                        $vote_amount = $cand->votes()->sum('amount');
                                     @endphp
-                                    {{ $vote_number }}
+                                    {{ number_format($vote_number) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">
-                                {{ number_format($vote_number * $contest->vote_fee) }} {{ $contest->currency }}
-                            </td>
+                                {{ number_format($vote_amount) }} {{ $contest->currency }}
+                            </td>--}}
                         </tr>
                     @empty
                         No statistics available yet

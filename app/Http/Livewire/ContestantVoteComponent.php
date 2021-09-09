@@ -224,8 +224,8 @@ class ContestantVoteComponent extends Component
         $vote->ip_address = $_SERVER['REMOTE_ADDR'];
         $vote->payment_type = $type;
         $vote->payment_status = 'SUCCESS';
-        $vote->amount = $this->vote_amount;
-        $vote->currency = $this->currency;
+        $vote->amount = (int)currency(preg_replace('/,/', '',$this->vote_amount), $from = $this->currency, $to = $this->contest->currency, $format = false);
+        $vote->currency = $this->contest->currency;
         $vote->save();
         Session::flash('message_success', 'Vote Successful. '.$this->vote_count.' vote(s) added to '.$cand->name); 
         $this->redirect(route('vote.candidate', $this->contest->slug));
