@@ -117,7 +117,8 @@ class ContestantVoteComponent extends Component
 
     public function callFlutter()
     {
-        $this->validate(['name' => 'required', 'vote_amount' => 'required', 'email' => 'required', 'currency' => 'required']);
+        $this->vote_amount = preg_replace('/,/', '',$this->vote_amount);
+        $this->validate(['name' => 'required', 'vote_amount' => 'required|numeric', 'email' => 'required', 'currency' => 'required']);
 
         //Initialize new variables for Flutter JS
     	$this->dispatchBrowserEvent('flutterpay', ['nm' => $this->name, 'cr' => $this->currency, 'am' => $this->vote_amount, 'em'=>$this->email, 'des' => $this->contest->name, 'refs' => $this->refs, 'pub' => $this->pub]);
