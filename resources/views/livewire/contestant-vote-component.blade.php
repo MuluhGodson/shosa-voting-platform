@@ -32,7 +32,6 @@
                         </div>--}}
                         <div class="p-2 my-1">
                             <h1 class="text-center text-lg text-secondary font-bold uppercase">
-                                <span class="font-bold text-gray-200">#{{ $cand->pivot->candidate_number }}</span>
                                 {{ $cand->name }}
                             </h1>
                             {{--<p class="text-gray-400 text-center"> Str::words($cand->bio,5,'...read more')  }}</p>--}}
@@ -129,7 +128,7 @@
                         <!-- Pin to top right corner -->
                         <div class="absolute top-0 right-0 h-12 w-18 p-4">
                             <p class="pt-4 font-bold flex items-center justify-center lg:justify-start uppercase text-3xl">
-                               #<span class="text-secondary"> </span>
+                               
                             </p>
                         </div>
 
