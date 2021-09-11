@@ -45,6 +45,7 @@ class FinanceComponent extends Component
 
     public function initiateWithdraw()
     {
+        
         $this->ensurePasswordIsConfirmed();
 
         $this->validate([
@@ -54,23 +55,37 @@ class FinanceComponent extends Component
         if (!Network::isOrange($this->phone) && !Network::isMTN($this->phone)) {
             abort(403, 'INVALID MTN OR ORANGE PHONE NUMBER');
         } else {
+            $orange_balance = $this->balance[0]['value'];
+            $mtn_balance = $this->balance[1]['value'];
+
             $this->phone = preg_replace('/\s*/m', '', $this->phone);
             $type = Network::check($this->phone);
-
-            $payRequest = new Deposit($this->phone, preg_replace('/,/', '',$this->amount));
-            $pay = $payRequest->pay();
-            if($pay->success){
-                $w = new Withdrawal;
-                $w->email = Auth()->User()->email;
-                $w->tel = $this->phone;
-                $w->amount = $this->amount;
-                $w->status = "success";
-                $w->network = $type;
-                $w->save();
-                Session::flash('message_success', 'Withdrawal Successful. '.number_format($this->amount).' FCFA sent to '.$this->phone);
+         
+            if(($type == "orange") && (preg_replace('/,/', '',$this->amount) > $orange_balance))
+            {
+                Session::flash('message', 'INSUFFICIENT BALANCE IN YOUR ORANGE MONEY ACCOUNT');
+                $this->redirect(route('finance.index'));
+            } elseif(($type == "mtn") && ((preg_replace('/,/', '',$this->amount)) > $mtn_balance))
+            {
+                Session::flash('message', 'INSUFFICIENT BALANCE IN YOUR MTN MOBILE MONEY ACCOUNT');
                 $this->redirect(route('finance.index'));
             } else {
-                abort(403, 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN');
+
+                $payRequest = new Deposit($this->phone, preg_replace('/,/', '',$this->amount));
+                $pay = $payRequest->pay();
+                if($pay->success){
+                    $w = new Withdrawal;
+                    $w->email = Auth()->User()->email;
+                    $w->tel = $this->phone;
+                    $w->amount = $this->amount;
+                    $w->status = "success";
+                    $w->network = $type;
+                    $w->save();
+                    Session::flash('message_success', 'Withdrawal Successful. '.number_format($this->amount).' FCFA sent to '.$this->phone);
+                    $this->redirect(route('finance.index'));
+                } else {
+                    abort(403, 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN');
+                }
             }
         }
         
