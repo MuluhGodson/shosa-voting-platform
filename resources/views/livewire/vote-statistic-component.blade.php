@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody class=" text-gray-200 divide-y divide-gray-200">
-                    @forelse ($contest->candidates as $cand)
+                    @forelse ($candidates->sortByDesc('vote_count') as $cand)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex gap-4 items-center">
@@ -34,15 +34,11 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-200">
-                                    @php
-                                        $vote_number = $cand->votes()->sum('vote_count');
-                                        $vote_amount = $cand->votes()->sum('amount');
-                                    @endphp
-                                    {{ number_format($vote_number) }}
+                                    {{ number_format($cand->vote_count) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">
-                                {{ number_format($vote_amount) }} {{ $contest->currency }}
+                                {{ number_format($cand->vote_amount) }} {{ $contest->currency }}
                             </td>
                         </tr>
                     @empty

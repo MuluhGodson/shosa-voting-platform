@@ -35,6 +35,13 @@ class ContestantVoteComponent extends Component
 
     public function render()
     {
+        $candidates = $this->contest->candidates;
+        $cands = $candidates->transform(function ($cand, $key) {
+            $vote_number = $cand->votes()->sum('vote_count');
+            $cand->vote_count = $vote_number;
+            return $cand;
+        });
+        $this->candidates = $cands;
         return view('livewire.contestant-vote-component');
     }
 
