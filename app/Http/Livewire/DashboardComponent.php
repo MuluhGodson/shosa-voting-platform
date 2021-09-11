@@ -16,7 +16,15 @@ class DashboardComponent extends Component
     
     public function render()
     {
-        $contestants = Contest::withCount('candidates')->get();
-        return view('livewire.dashboard-component');
+        $contest = Contest::where('active',1)->first();
+        $candidates = $contest->candidates->toArray();
+        $count = count($candidates);
+        $generalStat =
+            (new ColumnChartModel())
+                ->setTitle('Voting Stats')
+                ->setAnimated(true)
+                ->addColumn($candidates[0]['name'], '10', '#f6ad55');
+
+        return view('livewire.dashboard-component', compact('generalStat'));
     }
 }

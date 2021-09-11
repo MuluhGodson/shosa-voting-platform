@@ -1471,6 +1471,9 @@ select {
 .flex-wrap {
 	flex-wrap: wrap;
 }
+.place-content-center {
+	place-content: center;
+}
 .content-center {
 	align-content: center;
 }
@@ -1543,6 +1546,9 @@ select {
 .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
 	--tw-divide-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-divide-opacity));
+}
+.self-center {
+	align-self: center;
 }
 .justify-self-center {
 	justify-self: center;
@@ -1730,10 +1736,6 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(254, 202, 202, var(--tw-bg-opacity));
 }
-.bg-green-200 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
-}
 .bg-green-100 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(209, 250, 229, var(--tw-bg-opacity));
@@ -1741,6 +1743,10 @@ select {
 .bg-gray-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(75, 85, 99, var(--tw-bg-opacity));
+}
+.bg-green-200 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
 }
 .bg-gray-300 {
 	--tw-bg-opacity: 1;
@@ -1942,6 +1948,10 @@ select {
 .text-4xl {
 	font-size: 2.25rem;
 	line-height: 2.5rem;
+}
+.text-6xl {
+	font-size: 3.75rem;
+	line-height: 1;
 }
 .font-medium {
 	font-weight: 500;

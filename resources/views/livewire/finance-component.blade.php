@@ -1,6 +1,6 @@
 <div>
      <div>
-        <x-jet-button wire:click="openCreate">
+        <x-jet-button wire:click="withdrawModal">
             {{__('Withdraw') }}
         </x-jet-button>
     </div>
@@ -55,6 +55,13 @@
             </div>
         </div>
 
+        @if(Session::has('message'))
+            <p class="uppercase text-red-500 bg-red-200 w-auto p-4 text-center">{{ Session::get('message') }}</p>
+        @endif
+        @if(Session::has('message_success'))
+            <p class="uppercase text-green-600 font-bold bg-green-100 w-auto p-4 text-center">{{ Session::get('message_success') }}</p>
+        @endif
+
         <div>
         <section class="container mx-auto p-6 font-mono">
         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
@@ -100,4 +107,63 @@
         </div>
         </section>
     </div>
+
+
+    @if($openWithdraw)
+        <x-jet-dialog-modal wire:model="openWithdraw">
+            <x-slot name="title">
+                Withdraw Funds
+            </x-slot>
+
+            <x-slot name="content">
+                Enter the phone number and amount. Note you will be asked to confirm your password before the withdrawal is made.
+                <x-jet-validation-errors class="mb-4" />
+                 <div class="mt-2">
+                    <x-jet-label class="font-bold" for="name" value="{{ __('Amount') }}" />
+                    <x-jet-input id="amount" class="cam-amount block mt-1 w-full border-gray-400 text-gray-800" wire:model="amount" type="text" name="amount" :value="old('amount')" required />
+                </div>
+                <div class="mt-4">
+                    <x-jet-label class="font-bold" for="momo-tel" value="{{ __('Momo Number') }}" />
+                    <small class="text-gray-500">Both Orange and MTN are accepted </small>
+                    <x-jet-input wire:loading.attr="disabled" wire:loading.class="bg-gray-600 disabled" wire:target="initiatePay()" id="phone" class="cam-tel block mt-1 w-full border-gray-400 text-gray-800" wire:model="phone" type="text" name="phone" :value="old('phone')" required />
+                </div>
+            </x-slot>
+
+            <x-slot name="footer">
+                    <x-jet-secondary-button wire:click="$toggle('openWithdraw')" wire:loading.attr="disabled">
+                        Nevermind
+                    </x-jet-secondary-button>
+                <x-jet-confirms-password wire:then="initiateWithdraw()">
+                    <x-jet-button class="ml-2" wire:loading.class="bg-transparent">
+                        Withdraw {{ $amount }} FCFA
+                        <div wire:loading wire:target="initiateWithdraw">
+                            <img width="20px" src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
+                        </div>
+                    </x-jet-button>
+                </x-jet-confirms-password>
+            </x-slot>
+        </x-jet-dialog-modal>
+    @endif
+
+     <script>
+        window.addEventListener('tel-number', event => {
+            var amountsCollection = document.getElementsByClassName("cam-amount");
+            var amounts = Array.from(amountsCollection);
+
+            amounts.forEach(function (el) {
+                var cleave = new Cleave(el, {
+                    numeral: true,
+                    numeralThousandsGroupStyle: 'thousand',
+                    numeralPositiveOnly: true,
+                    rawValueTrimPrefix: true,
+                });
+            });
+            var cleave = new Cleave('.cam-tel', {
+                phone: true,
+                phoneRegionCode: 'CM',
+                prefix: '+237',
+                noImmediatePrefix: true,
+            });
+        });
+    </script>
 </div>
