@@ -217,7 +217,7 @@
                         <div wire:loading wire:target="initiatePay" class="w-full">
                             <div class="grid grid-cols-1 justify-items-center  justify-center">
                                 <div>
-                                <p class="text-gray-400 text-center"> Check your phone to authorize the payment. Do not use the back button. </p>
+                                <p class="text-gray-400 text-center"> Check your phone to authorize the payment (*126# for MTN and #150*50# for Orange). Do not use the back button. </p>
                                 </div>
                                 <div>
                                     <img src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
