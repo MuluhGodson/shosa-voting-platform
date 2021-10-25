@@ -1,5 +1,15 @@
 <div>
-
+    <div class="my-5">
+        <x-jet-button wire:click="voteManual()">
+            {{__('Add Vote') }}
+        </x-jet-button>
+    </div>
+    @if(Session::has('message'))
+        <p class="uppercase text-red-500 bg-red-200 w-auto p-4 text-center">{{ Session::get('message') }}</p>
+    @endif
+    @if(Session::has('message_success'))
+        <p class="uppercase text-green-600 font-bold bg-green-100 w-auto p-4 text-center">{{ Session::get('message_success') }}</p>
+    @endif
         <div wire:poll.500ms class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block w-full sm:px-6 lg:px-8">
@@ -50,4 +60,43 @@
                 </div>
             </div>
             </div>
+
+    @if($openVote)
+        <x-jet-dialog-modal wire:model="openVote">
+            <x-slot name="title">
+                Manually Add Votes
+            </x-slot>
+
+            <x-slot name="content">
+                Select a candidate and add their votes.
+                <x-jet-validation-errors class="mb-4" />
+                 <div class="mt-2">
+                    <select wire:model="candi" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
+                        <option>Select Candidate</option>
+                        @foreach ($candidates as $candi)
+                            <option value="{{ $candi->id }}">{{ $candi->name }}</option>
+                        @endforeach
+                    <select>
+                 </div>
+                 <div class="mt-2">
+                    <x-jet-label class="font-bold" for="name" value="{{ __('Number of Votes') }}" />
+                    <x-jet-input id="vote_number" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="vote_number" type="number" name="vote_number" :value="old('vote_number')" required />
+                </div>
+            </x-slot>
+
+            <x-slot name="footer">
+                    <x-jet-secondary-button wire:click="$toggle('openVote')" wire:loading.attr="disabled">
+                        Nevermind
+                    </x-jet-secondary-button>
+                <x-jet-confirms-password wire:then="addVote()">
+                    <x-jet-button class="ml-2" wire:loading.class="bg-transparent">
+                        Add Votes
+                        <div wire:loading wire:target="addVote">
+                            <img width="20px" src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
+                        </div>
+                    </x-jet-button>
+                </x-jet-confirms-password>
+            </x-slot>
+        </x-jet-dialog-modal>
+    @endif
 </div>
