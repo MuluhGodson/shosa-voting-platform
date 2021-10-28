@@ -15,7 +15,7 @@ class PayentRequestComponent extends Component
     public $pr, $contest;
     public function mount()
     {
-        $this->pr = PayRequest::where('status', 'PENDING')->get();
+        $this->pr = PayRequest::orderBy('created_at','desc')->where('status', 'PENDING')->get();
         $this->contest = Contest::where('active',true)->first();
     }
     public function render()

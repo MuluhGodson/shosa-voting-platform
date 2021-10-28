@@ -60,7 +60,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-200">
-                                    {{ \App\Models\Candidate::find($p->candidate_id)->name }}
+                                    {{ Str::remove('CANDIDATE',\App\Models\Candidate::find($p->candidate_id)->name) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">
