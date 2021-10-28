@@ -6,11 +6,13 @@ use Livewire\Component;
 use App\Models\Contest;
 use App\Models\Candidate;
 use App\Models\Vote;
+use App\Models\PayRequest;
 use App\Models\Utils\Currency;
 use Illuminate\Support\Str;
 use Malico\MeSomb\Payment;
 use Malico\MobileCM\Network;
 use Session;
+use Illuminate\Support\Facades\Http;
 
 class ContestantVoteComponent extends Component
 {
@@ -20,7 +22,7 @@ class ContestantVoteComponent extends Component
     public $viewCandidate, $showText = false;
     public $text_words = 15;
     public $vote_payment, $isLocal, $isIntl, $payStatus, $voted_already, $vote_succesful = false;
-    public $data, $refs, $slug, $p_type, $free_vote, $flutter_data, $pub, $fee, $momo_tel, $name, $tel, $email, $currencies, $vote_fee, $currency, $vote_count, $vote_amount, $currency_symbol;
+    public $data, $refs, $slug, $p_type, $free_vote, $flutter_data, $pub, $fee, $momo_tel, $name, $tel, $email, $currencies, $vote_fee, $currency, $vote_count, $vote_amount, $currency_symbol, $vp;
 
     protected $listeners = ['flutterTrans', 'flutterClose'];
 
@@ -184,11 +186,20 @@ class ContestantVoteComponent extends Component
             } else {
                 $phone = preg_replace('/\s*/m', '', $this->momo_tel);
                 $type = Network::check($phone);
-  
+                $data = [
+                    'tel' => $phone,
+                    'amount' => $this->vote_amount,
+                    'currency' => 'XAF',
+                    'candidate_id' => $this->candidate->id,
+                    'vote_count' => $this->vote_count,
+                    'pay_service' => $type,
+                ];
+                $this->registerPayment($data);
                 $payRequest = new Payment($phone, preg_replace('/,/', '',$this->vote_amount));
                 $pay = $payRequest->pay();
                 if($pay->success){
                     $this->payStatus = true;
+                    $this->validatePayment();
                     $this->paidVote($this->slug,$type);
                 } else {
                    abort(403, 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN');
@@ -220,6 +231,29 @@ class ContestantVoteComponent extends Component
             $this->voted_already = false;
             $this->vote_succesful = true;
         }
+    }
+
+
+//Register payment info before sending payment request
+    public function registerPayment($data)
+    {
+        $pr = new PayRequest();
+        $pr->tel = $data['tel'];
+        $pr->amount = $data['amount'];
+        $pr->currency = $data['currency'];
+        $pr->vote_count = $data['vote_count'];
+        $pr->status = "PENDING";
+        $pr->candidate_id = $data['candidate_id'];
+        $pr->pay_service = $data['pay_service'];
+        $pr->save();
+        $this->vp = $pr->id;
+    }
+
+    public function validatePayment()
+    {
+        $p = PayRequest::find($this->vp);
+        $p->status = "SUCCESS";
+        $p->save();
     }
 
     public function paidVote($candidate,$type)

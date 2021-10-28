@@ -1,9 +1,9 @@
 <div>
-    <div class="my-5">
+    {{--<div class="my-5">
         <x-jet-button wire:click="voteManual()">
             {{__('Add Vote') }}
         </x-jet-button>
-    </div>
+    </div>--}}
     @if(Session::has('message'))
         <p class="uppercase text-red-500 bg-red-200 w-auto p-4 text-center">{{ Session::get('message') }}</p>
     @endif

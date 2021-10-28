@@ -39,4 +39,9 @@ class Candidate extends Model
     {
         return $this->hasMany(Vote::class, 'candidate_id');
     }
+
+    public function payrequests()
+    {
+        return $this->hasMany(PayRequest::class, 'candidate_id');
+    }
 }

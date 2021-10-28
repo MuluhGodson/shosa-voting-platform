@@ -30,7 +30,7 @@ Route::domain('vote.'.config('app.domain'))->group(function () {
         Route::get('/contest', [ContestController::class, 'index'])->name('contest.index');
         Route::get('/{contest}/candidates', [CandidateController::class, 'index'])->name('candidate.index');
         Route::get('/statistics', [VoteController::class, 'statistics'])->name('vote.statistics');
-
+        Route::get('/payment/request', [VoteController::class, 'paymentRequest'])->name('pay.request');
         Route::get('/finance', [PageController::class, 'finance'])->name('finance.index');
     });
 });

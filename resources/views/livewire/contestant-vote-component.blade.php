@@ -35,7 +35,7 @@
                          <!-- Pin to right corner -->
                         <div class="absolute top-0 right-0 h-10 w-18 p-1 bg-secondary text-white">
                             <p class="p-1 font-bold flex items-center justify-center lg:justify-start uppercase text-xl">
-                                <span class="font-bold">{{ $cand->vote_count}} @if($cand->vote_count > 1 || $cand->vote_count == 0)Votes @else Vote @endif</span>
+                                <span class="font-bold">{{ number_format($cand->vote_count)}} @if($cand->vote_count > 1 || $cand->vote_count == 0)Votes @else Vote @endif</span>
                             </p>
                         </div>
                     </div>
@@ -347,7 +347,7 @@
             </x-jet-dialog-modal>
         @endif
 
-
+       
         <script>
             window.addEventListener('tel-number', event => {
                 var amountsCollection = document.getElementsByClassName("cam-amount");
