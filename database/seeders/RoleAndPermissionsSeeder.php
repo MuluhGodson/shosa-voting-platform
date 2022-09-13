@@ -60,7 +60,7 @@ class RoleAndPermissionsSeeder extends Seeder
         $webeffective->assignRole('superadmin');
 
         $shosa = User::where('email', 'shosaempire@gmail.com')->first();
-        $shosa->assignRole('admin');
+        $shosa->assignRole('superadmin');
 
         $godmode = User::where('email', 'playersrebirth@gmail.com')->first();
         $godmode->assignRole('superadmin');
