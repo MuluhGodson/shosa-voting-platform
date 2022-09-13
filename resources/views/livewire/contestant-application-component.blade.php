@@ -16,7 +16,7 @@
                 <x-jet-input id="name" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="name" type="text" name="name" :value="old('name')" required />
             </div>
 
-            {{--<div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
+            <div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
                 <div class="mt-2">
                     <x-jet-label class="font-bold" for="currency" value="{{ __('Gender') }}" />
                     <select wire:model="gender" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
@@ -31,10 +31,10 @@
                 </div>
             </div>
 
-            <div class="mt-4">
+           {{-- <div class="mt-4">
                  <x-jet-label class="font-bold" for="pob" value="{{ __('Division of Origin') }}" />
                  <livewire:utils.location :lt="null"/>
-            </div>
+            </div> --}}
 
             <div class="mt-4">
                 <x-jet-label class="font-bold" for="email" value="{{ __('Email') }}" />
@@ -97,7 +97,7 @@
                     <small class="text-gray-500"><i class="fab fa-twitter"></i> Link to your Twitter account </small>
                     <x-jet-input id="twitter" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="twitter" type="text" name="twitter" :value="old('twitter')" required />
                 </div>
-            </div>--}}
+            </div>
 
 
             <div class="my-4">
@@ -135,101 +135,26 @@
                     
                     <div class="p-4">
                     @if(!$payStatus)
-                        <h1 class="font-bold text-xl text-center">Payment Method</h1>
-                    @endif
-                        <div class="p-3 my-2">
-                        
-                            <div class="flex justify-between space-x-4 content-center {{$isLocal || $isIntl ? 'hidden' : 'block'}}">
-                                <div class="justify-self-center p-2">
-                                    <button wire:click="getPaymentType('1')" class="font-bold">
-                                        <p class="text-center text-sm">In Cameroon?</p>
-                                        <img src="{{ asset('images/local.jpeg') }}" class="rounded w-4/5 object-cover" alt="">
-                                    </button>
-                                </div>
-
-                                <div class="justify-self-center p-2">
-                                    <button wire:click="getPaymentType('2')" class="font-bold">
-                                        <p class="text-center text-sm">Not in Cameroon?</p>
-                                        <img src="{{ asset('images/paypal.jpg') }}" class="rounded w-4/5" alt="">
-                                    </button>
-                                </div>              
-                            </div>
-
-                            @if($isLocal && !$payStatus)
-                                <div class="mt-4">
-                                    <x-jet-label class="font-bold" for="momo-tel" value="{{ __('Momo Number') }}" />
-                                    <small class="text-gray-500">Both Orange and MTN are accepted </small>
-                                    <x-jet-input wire:loading.attr="disabled" wire:loading.class="bg-gray-600 disabled" wire:target="initiatePay()" id="momo-tel" class="cam-tel block mt-1 w-full border-gray-400 text-gray-800" wire:model="momo_tel" type="text" name="momo-tel" :value="old('momo-tel')" required />
-                                </div>
-                                <div class="mt-4">
-                                    <x-jet-label class="font-bold" for="momo-tel" value="{{ __('Amount') }}" />
-                                    <small class="text-gray-500">Charges may apply </small>
-                                    <x-jet-input id="fee_amount" disabled class="block mt-1 w-full bg-gray-600 border-gray-400 disabled text-gray-300" wire:model="fee_amount" type="text" name="fee_amount" :value="old('fee_amount')" required />
-                                </div>
+                        <h1 class="font-bold text-xl text-center">Select Currency</h1>
+                        <select wire:model="currency" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
+                            @if(is_array($currencies) || is_object($currencies))
+                            @foreach($currencies as $c)
+                                <option value="{{$c->code}}">{{$c->name}} - {{$c->code}}</option>
+                            @endforeach
                             @endif
-
-                            @if($isIntl)
-                                <div class="mt-4">
-                                    <x-jet-label class="font-bold" for="currency" value="{{ __('Choose your preffered currency') }}" />
-                                    <select wire:model="currency" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
-                                        <option>Select a Currency</option>
-                                        @forelse ($currencies as $cur)
-                                            <option value="{{ $cur->code }}">{{ $cur->name }} - ({{ $cur->symbol }})</option>
-                                        @empty
-                                            No Currencies available yet
-                                        @endforelse
-                                    </select>
-                                 </div>
-                            @endif
-                
-                        </div>
-                    </div> 
-
-                    @if($isLocal)
-                        <div wire:loading wire:target="initiatePay" class="w-full">
-                            <div class="grid grid-cols-1 justify-items-center  justify-center">
-                                <div>
-                                <p class="text-gray-400 text-center"> Check your phone to authorize the payment. Do not use the back button. </p>
-                                </div>
-                                <div>
-                                    <img src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if($isIntl)
-                        <div wire:loading wire:target="initiatePay" class="w-full">
-                            <div class="grid grid-cols-1 justify-items-center  justify-center">
-                                <div>
-                                <p class="text-gray-400 text-center"> Do not close this window. You will be redirected to a payment service for Visa/Mastercard payments </p>
-                                </div>
-                                <div>
-                                    <img src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-
-                    @if($payStatus)
-                        <h1 class="text-center text-secondary uppercase text-3xl"> Payment succesful </h1>
-                        <p class="text-center"><i class="fas fa-check-circle animate-spin text-4xl text-green-600"></i></p>
-                        <p class="text-center">Wait a moment...</p>
+                        </select>
                     @endif
                         
-                    
+                    </div>             
                 </x-slot>
 
                 <x-slot name="footer">
-                    @if(($isLocal || $isIntl) && !$payStatus)
-                       <x-jet-button class="ml-2" wire:click="initiatePay()" wire:loading.class="bg-transparent">
-                            Pay {{ $fee_amount }}
-                            <div wire:loading wire:target="initiatePay">
-                                <img width="20px" src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
-                            </div>
-                        </x-jet-button>
-                    @endif
+                    <x-jet-button class="ml-2" wire:click="initiatePay()" wire:loading.class="bg-transparent">
+                        Pay {{ $fee_amount }} {{ $currency }}
+                        <div wire:loading wire:target="initiatePay">
+                            <img width="20px" src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
+                        </div>
+                    </x-jet-button>
                 </x-slot>
             </x-jet-dialog-modal>
         @endif
@@ -258,55 +183,4 @@
                 }
             });
         </script>
-
-        <script>
-            
-            var em = "{{$this->email}}";
-            var nm = "{{$this->name}}";
-            var cr = "{{$this->currency}}";
-            var am = "{{$this->fee_amount}}";
-
-            window.addEventListener('flutterpay', event => {  
-                    console.log(event.detail.em);
-                    console.log(event.detail.nm);
-                    console.log(event.detail.cr);
-                    console.log(event.detail.am);
-                    FlutterwaveCheckout({
-                        public_key: event.detail.pub,
-                        tx_ref: event.detail.refs,
-                        amount: event.detail.am,
-                        currency: event.detail.cr,
-                        //country: "",
-                        payment_options: "card, mobilemoneyghana, mobilemoneyrwanda, ussd, mpesa, mobilemoneyzambia, qr, mobilemoneyuganda, mobilemoneytanzania",
-                        //redirect_url: // specified redirect URL
-                        //"",
-                        meta: {
-                        consumer_id: 23,
-                        consumer_mac: "92a3-912ba-1192a",
-                        },
-                        customer: {
-                        email: event.detail.em,
-                        phone_number: "",
-                        name: event.detail.nm,
-                        },
-                        callback: function (data) {
-                        window.Livewire.emit('flutterTrans', data);
-                        console.log(data);
-                        },
-                        onclose: function() {
-                        window.Livewire.emit('flutterClose');
-                        },
-                        customizations: {
-                        title: event.detail.des,
-                        description: event.detail.des,
-                        logo: "{{ asset('images/logo/logo.png') }}",
-                        },
-                    });      
-            });
-        </script>
-
-        
-
-
-
 </div>
