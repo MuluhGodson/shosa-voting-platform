@@ -19,11 +19,11 @@ class CreateContestsTable extends Migration
             $table->string('slug');
             $table->boolean('active')->default(true);
             $table->boolean('fee')->default(false);
-            $table->decimal('fee_amount')->nullable();
+            $table->decimal('fee_amount', 18, 2)->nullable();
             $table->string('currency')->nullable();
             $table->boolean('vote_tarrif')->default(false);
             $table->string('vote_count')->default("1");
-            $table->decimal('vote_fee')->nullable();
+            $table->decimal('vote_fee',18,2)->nullable();
             $table->text('description');
             $table->string('max_participants')->nullable();
             $table->string('cover_image');

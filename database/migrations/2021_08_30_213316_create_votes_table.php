@@ -18,7 +18,8 @@ class CreateVotesTable extends Migration
             $table->unsignedBigInteger('contest_id');
             $table->unsignedBigInteger('candidate_id');
             $table->string('currency')->nullable();
-            $table->string('amount')->nullable();
+            $table->decimal('amount', 18, 2)->nullable();
+            $table->decimal('amount_in_xaf', 18, 2)->nullable();
             $table->string('vote_count');
             $table->string('payment_type')->nullable();
             $table->string('payment_status')->nullable();
