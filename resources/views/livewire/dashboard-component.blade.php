@@ -31,7 +31,7 @@
 	    				<i class="fas fa-users text-6xl"></i>
 	    			</div>
 	    			<div class="text-center">
-	    				<h1 class="text-3xl font-semi-bold"> {{\App\Models\Contest::withCount('candidates')->where('active',1)->first()->candidates_count}}</h1>
+	    				<h1 class="text-3xl font-semi-bold"> {{\App\Models\Contest::withCount('candidates')->where('active',1)->first()->candidates_count ?? 0}}</h1>
 	    				<h1 class="text-xl">Total Contestants</h1>	    				
 	    			</div>	    			
 	    		</div>			
