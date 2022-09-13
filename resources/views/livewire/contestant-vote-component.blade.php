@@ -22,15 +22,15 @@
                 <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000" class="shadow-lg rounded transition hover:px-1 duration-500 ease-in-out  col hover:border-r-2 hover:boder-r-white hover:border-l-2 hover:border-l-secondary cursor-pointer hover:transform hover:scale-150">
                     <div wire:click="openCandidate('{{ $cand->slug }}')">
                         <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-full w-full rounded-md" alt="{{$cand->name}}">
-                        {{--<div class="my-1 flex justify-center gap-4 py-1 px-1">
-                            <p class="text-sm text-gray-400"><i class="fas fa-birthday-cake"></i> {{ $cand->dob }}</p>
+                        <div class="my-1 flex justify-center gap-4 py-1 px-1">
+                            <p class="text-sm text-gray-400"><i class="fas fa-birthday-cake"></i> {{ \Carbon\Carbon::parse($cand->dob)->diffForHumans(null,1,true) }}</p>
                             <p class="text-sm text-gray-400"><i class="fas fa-city"></i> {{ $cand->town }}</p>
-                        </div>--}}
+                        </div>
                         <div class="p-2 my-1">
                             <h1 class="text-center text-lg text-secondary font-bold uppercase">
                                 {{ $cand->name }}
                             </h1>
-                            {{--<p class="text-gray-400 text-center"> Str::words($cand->bio,5,'...read more')  }}</p>--}}
+                            {{-- <pclass="text-gray-400text-center">Str::words($cand->bio,5,'...readmore') </p>--}}
                         </div>
                          <!-- Pin to right corner -->
                         <div class="absolute top-0 right-0 h-10 w-18 p-1 bg-secondary text-white">
@@ -76,13 +76,13 @@
                                 <h1 class="text-xl font-bold pt-8 lg:pt-0 text-secondary text-left uppercase">{{ $candidate->name }}</h1>
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
                                 
-                                {{--<div class="text-md text-left">
+                                <div class="text-md text-left">
                                     <p>
                                         Date of Birth: {{ $candidate->dob }}
                                     </p>
-                                    <p>
+                                    {{--<p>
                                         Division of Origin: {{ $candidate->division->name }}
-                                    </p>
+                                    </p>--}}
                                     <p>
                                         Height: {{ $candidate->height }}
                                     </p>
@@ -90,16 +90,16 @@
                                         Profession: {{ $candidate->profession }}
                                     </p>
                                    
-                                </div>--}}
+                                </div>
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
-                                {{--<p class="pt-8 text-sm">
+                                <p class="pt-8 text-sm">
                                     {{ Str::words($candidate->bio, $text_words , '...') }}
                                     @if(!$showText)
                                         <button wire:click="openText('{{ $candidate->slug }}','y')" class="bg-transparent text-secondary font-bold">See all</button>
                                     @else
                                         <button wire:click="openText('{{ $candidate->slug }}','n')" class="bg-transparent text-secondary font-bold">See less</button>
                                     @endif
-                                </p>--}}
+                                </p>
 
                                 <div class="pt-12 pb-8">
                                     <button wire:click="openVote('{{ $candidate->slug }}')" class="bg-secondary hover:bg-transparent hover:border hover:border-secondary hover:text-secondary text-white font-bold py-2 px-4 rounded-full">
@@ -129,7 +129,7 @@
                         </div>
 
                         <!-- Pin to left corner -->
-                        {{--@if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
+                        @if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
                         <div class="absolute top-0 left-0 h-10 w-18 p-1 text-white">
                             <div class="flex justify-center gap-1 text-sm p-2">
                                 @if($candidate->fb_link)
@@ -143,7 +143,7 @@
                                 @endif
                             </div>
                         </div>
-                        @endif--}}
+                        @endif
                         
 
                     </div>
@@ -176,130 +176,37 @@
                 <x-slot name="content">
                     <x-jet-validation-errors class="mb-4" />
                     <div class="p-4">
-                    @if(!$payStatus)
-                        <h1 class="font-bold text-xl text-center">Payment Method</h1>
-                    @endif
-                        <div class="p-3 my-2">
-
-                            <div class="grid md:grid-cols-2 grid-cols-1 justify-between space-x-4 content-center {{$isLocal || $isIntl ? 'hidden' : 'block'}}">
-                                <div class="justify-self-center p-2">
-                                    <button wire:click="getPaymentType('1')" class="font-bold">
-                                        <p class="text-center text-sm">In Cameroon?</p>
-                                        <img width="190px" src="{{ asset('images/local.jpeg') }}" class="rounded object-cover" alt="">
-                                    </button>
-                                </div>
-
-                                <div class="justify-self-center p-2">
-                                    <button wire:click="getPaymentType('2')" class="font-bold">
-                                        <p class="text-center text-sm">Not in Cameroon?</p>
-                                        <img width="2000px" src="{{ asset('images/paypal.jpg') }}" class="rounded object-cover" alt="">
-                                    </button>
-                                </div>              
-                            </div>
-
-                            @if($isLocal && !$payStatus)
-                                <div class="mt-2">
-                                    <x-jet-label class="font-bold" for="name" value="{{ __('Amount') }}" />
-                                    <x-jet-input id="vote_amount" class="cam-amount block mt-1 w-full border-gray-400 text-gray-800" wire:model="vote_amount" type="text" name="vote_amount" :value="old('vote_amount')" required />
-                                </div>
-                                <div class="mt-4">
-                                    <x-jet-label class="font-bold" for="momo-tel" value="{{ __('Momo Number') }}" />
-                                    <small class="text-gray-500">Both Orange and MTN are accepted </small>
-                                    <x-jet-input wire:loading.attr="disabled" wire:loading.class="bg-gray-600 disabled" wire:target="initiatePay()" id="momo-tel" class="cam-tel block mt-1 w-full border-gray-400 text-gray-800" wire:model="momo_tel" type="text" name="momo-tel" :value="old('momo-tel')" required />
-                                </div>
-                            @endif
-
-                
+                        <h1 class="font-bold text-xl text-center">Payment Information</h1>
+                    
+                        <div class="my-2">
+                            <h3 class="font-bold text-xl text-center">Select Currency</h3>
+                            <select wire:model="currency" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
+                                @if(is_array($currencies) || is_object($currencies))
+                                @foreach($currencies as $c)
+                                    <option value="{{$c->code}}">{{$c->name}} - {{$c->code}}</option>
+                                @endforeach
+                                @endif
+                            </select>
                         </div>
-                    </div> 
-
-                    @if($isLocal)
-                        <div wire:loading wire:target="initiatePay" class="w-full">
-                            <div class="grid grid-cols-1 justify-items-center  justify-center">
-                                <div>
-                                <p class="text-gray-400 text-center"> Check your phone to authorize the payment (*126# for MTN and #150*50# for Orange). Do not use the back button. </p>
-                                </div>
-                                <div>
-                                    <img src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
-                                </div>
+                        <div class="my-2">
+                            <h3 class="font-bold text-xl text-center">Enter amount</h3>
+                            <div class="mt-1">
+                                <x-jet-label class="font-bold" for="name" value="{{ __('Amount') }}" />
+                                <x-jet-input id="vote_amount" class="cam-amount block mt-1 w-full border-gray-400 text-gray-800" wire:model="vote_amount" type="text" name="vote_amount" :value="old('vote_amount')" required />
                             </div>
                         </div>
-                    @endif
-
-                    @if($isIntl)
-                            <div class="grid md:grid-cols-2 grid-cols-1 gap-3 justify-between">
-                                <div class="mt-2">
-                                    <x-jet-label class="font-bold" for="name" value="{{ __('Amount') }}" />
-                                    <x-jet-input id="vote_amount" class="cam-amount block mt-1 w-full border-gray-400 text-gray-800" wire:model="vote_amount" type="text" name="vote_amount" :value="old('vote_amount')" required />
-                                </div>
-                                <div class="mt-2">
-                                    <x-jet-label class="font-bold" for="currency" value="{{ __('Choose your preffered currency') }}" />
-                                    <select wire:model="currency" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
-                                        <option>Select a Currency</option>
-                                        @forelse ($currencies as $cur)
-                                            <option value="{{ $cur->code }}">{{ $cur->name }} - ({{ $cur->symbol }})</option>
-                                        @empty
-                                            No Currencies available yet
-                                        @endforelse
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <x-jet-label class="font-bold" for="name" value="{{ __('Name') }}" />
-                                <x-jet-input id="name" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="name" type="text" name="name" :value="old('name')" required />
-                            </div>
-                            <div class="mt-2">
-                                <x-jet-label class="font-bold" for="name" value="{{ __('Email') }}" />
-                                <x-jet-input id="email" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="email" type="text" name="email" :value="old('email')" required />
-                            </div>
-                        <div wire:loading wire:target="initiatePay" class="w-full">
-                            <div class="grid grid-cols-1 justify-items-center  justify-center">
-                                <div>
-                                <p class="text-gray-400 text-center"> Do not close this window. You will be redirected to a payment service for Visa/Mastercard payments </p>
-                                </div>
-                                <div>
-                                    <img src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-
-                    @if($payStatus)
-                        <h1 class="text-center text-secondary uppercase text-3xl"> Payment succesful. Added {{ $vote_count }} vote(s). </h1>
-                        <p class="text-center"><i class="fas fa-check-circle animate-spin text-4xl text-green-600"></i></p>
-                        <p class="text-center">Wait a moment...</p>
-                    @endif
-                        
+                    </div>
                     
                 </x-slot>
 
                 <x-slot name="footer">
-                    @if(($isLocal || $isIntl) && !$payStatus)
-                       <x-jet-button class="ml-2" wire:click="initiatePay()" wire:loading.class="bg-transparent">
-                            Pay {{ $vote_amount }} {{ $currency }}
-                            <div wire:loading wire:target="initiatePay">
-                                <img width="20px" src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
-                            </div>
-                        </x-jet-button>
-                    @endif
 
-                    @if($isLocal)
-                    <div class="my-4 p-2 flex justify-start">
-                        <button wire:click="getPaymentType('2')" class="font-bold">
-                        <p class="text-center text-sm text-gray-400">Not in Cameroon? Pay with</p>
-                        <img width="190px" src="{{ asset('images/paypal.jpg') }}" class="rounded" alt="">
-                        </button>
-                    </div>
-                    @endif
-                    @if($isIntl)
-                    <div class="my-4 p-2 flex justify-start">
-                        <button wire:click="getPaymentType('1')" class="font-bold">
-                            <p class="text-center text-sm text-gray-400">In Cameroon? Pay with</p>
-                            <img width="190px" src="{{ asset('images/local.jpeg') }}" class="rounded object-cover" alt="">
-                        </button>
-                    </div>
-                    @endif
+                    <x-jet-button class="ml-2" wire:click="initiatePay()" wire:loading.class="bg-transparent">
+                        Pay {{ $vote_amount }} {{ $currency }}
+                        <div wire:loading wire:target="initiatePay">
+                            <img width="20px" src="{{ asset("images/logo/loading.png") }}" class="animate-spin">
+                        </div>
+                    </x-jet-button>
                 </x-slot>
             </x-jet-dialog-modal>
         @endif
@@ -346,75 +253,4 @@
                 </x-slot>
             </x-jet-dialog-modal>
         @endif
-
-       
-        <script>
-            window.addEventListener('tel-number', event => {
-                var amountsCollection = document.getElementsByClassName("cam-amount");
-                var amounts = Array.from(amountsCollection);
-
-                amounts.forEach(function (el) {
-                    var cleave = new Cleave(el, {
-                        numeral: true,
-                        numeralThousandsGroupStyle: 'thousand',
-                        numeralPositiveOnly: true,
-                        rawValueTrimPrefix: true,
-                    });
-                });
-                var cleave = new Cleave('.cam-tel', {
-                    phone: true,
-                    phoneRegionCode: 'CM',
-                    prefix: '+237',
-                    noImmediatePrefix: true,
-                });
-            });
-        </script>
-        
-        <script>
-            var em = "{{$this->email}}";
-            var nm = "{{$this->name}}";
-            var cr = "{{$this->currency}}";
-            var am = "{{$this->vote_amount}}";
-
-            window.addEventListener('flutterpay', event => {  
-                    console.log(event.detail.em);
-                    console.log(event.detail.nm);
-                    console.log(event.detail.cr);
-                    console.log(event.detail.am);
-                    FlutterwaveCheckout({
-                        public_key: event.detail.pub,
-                        tx_ref: event.detail.refs,
-                        amount: event.detail.am,
-                        currency: event.detail.cr,
-                        //country: "",
-                        payment_options: "card, mobilemoneyghana, mobilemoneyrwanda, ussd, mpesa, mobilemoneyzambia, qr, mobilemoneyuganda, mobilemoneytanzania",
-                        //redirect_url: // specified redirect URL
-                        //"",
-                        meta: {
-                        consumer_id: 23,
-                        consumer_mac: "92a3-912ba-1192a",
-                        },
-                        customer: {
-                        email: event.detail.em,
-                        phone_number: "",
-                        name: event.detail.nm,
-                        },
-                        callback: function (data) {
-                        window.Livewire.emit('flutterTrans', data);
-                        console.log(data);
-                        },
-                        onclose: function() {
-                        window.Livewire.emit('flutterClose');
-                        },
-                        customizations: {
-                        title: event.detail.des,
-                        description: event.detail.des,
-                        logo: "{{ asset('images/logo/logo.png') }}",
-                        },
-                    });      
-            });
-        </script>
-
-
-
 </div>
