@@ -13,6 +13,7 @@ use Malico\MeSomb\Payment;
 use Malico\MobileCM\Network;
 use Session;
 use Illuminate\Support\Facades\Http;
+use App\Helpers\Paymooney;
 
 class ContestantVoteComponent extends Component
 {
@@ -21,18 +22,17 @@ class ContestantVoteComponent extends Component
     public $candidates;
     public $viewCandidate, $showText = false;
     public $text_words = 15;
-    public $vote_payment, $isLocal, $isIntl, $payStatus, $voted_already, $vote_succesful = false;
-    public $data, $refs, $slug, $p_type, $free_vote, $flutter_data, $pub, $fee, $momo_tel, $name, $tel, $email, $currencies, $vote_fee, $currency, $vote_count, $vote_amount, $currency_symbol, $vp;
+    public $vote_payment, $voted_already, $vote_succesful = false;
+    public $data, $refs, $slug, $p_type, $free_vote, $fee, $momo_tel, $name, $tel, $email;
+    public $currencies, $vote_fee, $currency, $vote_count, $vote_amount, $currency_symbol, $vp;
 
-    protected $listeners = ['flutterTrans', 'flutterClose'];
 
 
     public function mount()
     {
         $this->currencies = Currency::all();
         $this->currency = $this->contest->currency;
-        $this->refs = 'SHOSAVOTE-'.Str::random(20);
-        $this->pub = config('flutterwave.public');
+        $this->refs = 'SHOSA-'.Str::random(20);
     }
 
     public function render()
@@ -124,94 +124,20 @@ class ContestantVoteComponent extends Component
         
     }
 
-    public function callFlutter()
-    {
-        $this->vote_amount = preg_replace('/,/', '',$this->vote_amount);
-        $this->validate(['name' => 'required', 'vote_amount' => 'required|numeric', 'email' => 'required', 'currency' => 'required']);
-
-        //Initialize new variables for Flutter JS
-    	$this->dispatchBrowserEvent('flutterpay', ['nm' => $this->name, 'cr' => $this->currency, 'am' => $this->vote_amount, 'em'=>$this->email, 'des' => $this->contest->name, 'refs' => $this->refs, 'pub' => $this->pub]);
-    }
-
-    public function flutterTrans($data)
-    {
-        $this->flutter_data = $data;
-        if ($data['status'] == 'successful') {
-            $this->payStatus = true;
-            $this->paidVote($this->slug, 'FLUTTER');
-        } else {
-            Session::flash('message', 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN'); 
-            $this->redirect->route('vote.candidate',$this->contest->slug);
-        }
-    }
-
-    public function flutterClose()
-    {
-        if($this->flutter_data){
-            if ($this->flutter_data['status'] == 'successful') {
-                Session::flash('message_success', 'Vote Successful. '.$this->vote_count.' vote(s) added to '.$this->contestant->name); 
-                $this->redirect->route('vote.candidate',  $this->contest->slug);
-            }
-        }
-        else {
-            Session::flash('message', 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN'); 
-            $this->redirect(route('vote.candidate', $this->contest->slug));
-        }
-    }
-
-    public function getPaymentType($t)
-    {
-        $this->dispatchBrowserEvent('tel-number');
-        $this->p_type = $t;
-        if ($t == 1) {
-            $this->momo_tel = $this->tel;
-            $this->isLocal = true;
-            $this->isIntl = false;
-        } elseif ($t == 2) {
-             $this->isLocal = false;
-             $this->isIntl = true;
-        } else {
-            abort(403, 'AN ERROR OCCURED');
-        }
-
-    }
-
     public function initiatePay()
     {
-        if($this->p_type == '1')
-        {
-            $this->validate(['momo_tel' => 'required']);
-            if (!Network::isOrange($this->momo_tel) && !Network::isMTN($this->momo_tel)) {
-                abort(403, 'INVALID MTN OR ORANGE PHONE NUMBER');
-            } else {
-                $phone = preg_replace('/\s*/m', '', $this->momo_tel);
-                $type = Network::check($phone);
-                $data = [
-                    'tel' => $phone,
-                    'amount' => $this->vote_amount,
-                    'currency' => 'XAF',
-                    'candidate_id' => $this->candidate->id,
-                    'vote_count' => $this->vote_count,
-                    'pay_service' => $type,
-                ];
-                $this->registerPayment($data);
-                $payRequest = new Payment($phone, preg_replace('/,/', '',$this->vote_amount));
-                $pay = $payRequest->pay();
-                if($pay->success){
-                    $this->payStatus = true;
-                    $this->validatePayment();
-                    $this->paidVote($this->slug,$type);
-                } else {
-                   abort(403, 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN');
-                }
-            }
-        } elseif($this->p_type == '2')
-        {
-            $this->callFlutter();
-        }
-        else {
-            abort(403, 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN');
-        }
+       
+        $data = [
+            'amount' => $this->vote_amount,
+            'currency' => $this->currency,
+            'candidate_id' => $this->candidate->id,
+            'vote_count' => $this->vote_count,
+        ];
+        $paymentRegistration = $this->registerPayment($data); 
+        $ref = 'SHOSA-V'.$paymentRegistration->id.'-'.Str::random(20);
+        $payment = new Paymooney();
+        $payment_url = $payment->generatePaymentUrl($data['amount'], $data['currency'], $paymentRegistration->id, $ref);
+        return redirect($payment_url);
     }
 
     public function vote(Candidate $candidate)
@@ -238,38 +164,12 @@ class ContestantVoteComponent extends Component
     public function registerPayment($data)
     {
         $pr = new PayRequest();
-        $pr->tel = $data['tel'];
         $pr->amount = $data['amount'];
         $pr->currency = $data['currency'];
         $pr->vote_count = $data['vote_count'];
         $pr->status = "PENDING";
         $pr->candidate_id = $data['candidate_id'];
-        $pr->pay_service = $data['pay_service'];
         $pr->save();
-        $this->vp = $pr->id;
-    }
-
-    public function validatePayment()
-    {
-        $p = PayRequest::find($this->vp);
-        $p->status = "SUCCESS";
-        $p->save();
-    }
-
-    public function paidVote($candidate,$type)
-    {
-        $cand = Candidate::where('slug', $candidate)->first();
-        $vote = new Vote();
-        $vote->contest_id = $this->contest->id;
-        $vote->candidate_id = $cand->id;
-        $vote->vote_count = $this->vote_count;
-        $vote->ip_address = $_SERVER['REMOTE_ADDR'];
-        $vote->payment_type = $type;
-        $vote->payment_status = 'SUCCESS';
-        $vote->amount = (int)currency(preg_replace('/,/', '',$this->vote_amount), $from = $this->currency, $to = $this->contest->currency, $format = false);
-        $vote->currency = $this->contest->currency;
-        $vote->save();
-        Session::flash('message_success', 'Vote Successful. '.$this->vote_count.' vote(s) added to '.$cand->name); 
-        $this->redirect(route('vote.candidate', $this->contest->slug));
+        return $pr;
     }
 }

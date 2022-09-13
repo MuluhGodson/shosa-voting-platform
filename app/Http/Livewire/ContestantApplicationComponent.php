@@ -14,11 +14,14 @@ use Illuminate\Support\Str;
 use Malico\MeSomb\Payment;
 use Malico\MobileCM\Network;
 use Session;
+use App\Helpers\Paymooney;
 
 class ContestantApplicationComponent extends Component
 {
     use WithFileUploads;
-    public $data, $coverPath, $candidateNumber, $refs, $p_type, $flutter_data, $pub, $fee, $momo_tel, $name, $bio, $dob, $tel, $cover, $height, $gender, $town, $profession, $slug, $country, $division, $region, $email, $facebook, $instagram, $twitter, $currencies, $fee_amount, $currency;
+    public $data, $coverPath, $candidateNumber, $refs, $p_type, $fee, $momo_tel, $name, $bio, $dob, $tel;
+    public $cover, $height, $gender, $town, $profession, $slug, $country, $division, $region, $email, $facebook;
+    public $instagram, $twitter, $currencies, $fee_amount, $currency, $contestant;
     public Contest $contest;
     public $h_unit = "m";
     public $fee_payment, $isLocal, $isIntl, $payStatus = false;
@@ -28,9 +31,8 @@ class ContestantApplicationComponent extends Component
     public function mount()
     {
         $this->currencies = Currency::all();
-        $this->currency = $this->contest->currency;
+        $this->currency = 'XAF';
         $this->refs = 'SHOSA-'.Str::random(20);
-        $this->pub = config('flutterwave.public');
     }
 
     public function render()
@@ -66,181 +68,80 @@ class ContestantApplicationComponent extends Component
         $this->candidateNumber = $totCandidates + 1;
         $this->data = $this->validate([
             'name' => 'required',
-           /* 'dob' => 'required',
+            'dob' => 'required',
             'email' => 'required|email',
             'gender' => 'required',
             'profession' => 'required',
-            'tel' => 'required',*/
+            'tel' => 'required',
             'cover' => 'required|image',
-            /*'division' => 'required',
+            /*'division' => 'required',*/
             'height' => 'required',
             'h_unit' => 'required',
             'bio' => 'required',
             'town' => 'required',
             'instagram' => 'sometimes',
             'facebook' => 'sometimes',
-            'twitter' => 'sometimes'*/
+            'twitter' => 'sometimes'
         ]);
 
         $coverExt = $this->cover->getClientOriginalExtension();
         $coverName = Str::random(10).'.'.$coverExt;
         $this->coverPath = $this->cover->storePubliclyAs('Contest/Candidates', $coverName, ['disk' => 'public']);
         
+        $this->contestant = $this->register($this->data);
+
         if($this->contest->fee)
         {
             $this->fee_amount = $this->contest->fee_amount;
             $this->fee_payment = true;
+
         } else {
-            $this->register($this->data, null, null);
+            $this->attachCandidate($this->contestant);
         }
         
     }
 
-    public function register($data, $payment, $type)
+    public function register($data)
     {
-        if($payment == null)
-        {
+       
             $candidate = new Candidate;
             $candidate->name = $data['name'];
-            /*$candidate->email = $data['email'];
+            $candidate->email = $data['email'];
             $candidate->sex = $data['gender'];
             $candidate->tel = $data['tel'];
             $candidate->height = $data['height'].$data['h_unit'];
             $candidate->profession = $data['profession'];
             $candidate->dob = $data['dob'];
             $candidate->town = $data['town'];
-            $candidate->bio = $data['bio'];*/
+            $candidate->bio = $data['bio'];
             $candidate->photo = $this->coverPath;
-            /*$candidate->division_id = $this->division->id;
+            /*$candidate->division_id = $this->division->id;*/
             if($data['instagram']) $candidate->ig_link = $data['instagram'];
             if($data['facebook']) $candidate->fb_link = $data['facebook'];
-            if($data['twitter']) $candidate->twitter_link = $data['twitter'];*/
+            if($data['twitter']) $candidate->twitter_link = $data['twitter'];
             $candidate->save();
-
-            $serial = 'SHOSA-'.Str::random(7);
-
-            
-            $this->contest->candidates()->attach($candidate->id, ['serial' => $serial, 'candidate_number' => $this->candidateNumber]);
-            $this->fee_payment = false;
-            $this->isLocal = false;
-            $this->isIntl =false;
-            $this->payStatus = false;
-            $this->sAlert('Application Succesful', 'success', 'false', 'center');
-            Session::flash('message_success', 'Application Succesful'); 
-            $this->redirect(route('vote.candidate', $this->contest->slug));
-        } else {
-            $candidate = new Candidate;
-            $candidate->name = $data['name'];
-            /*$candidate->email = $data['email'];
-            $candidate->sex = $data['gender'];
-            $candidate->tel = $data['tel'];
-            $candidate->height = $data['height'].$data['h_unit'];
-            $candidate->profession = $data['profession'];
-            $candidate->dob = $data['dob'];
-            $candidate->town = $data['town'];
-            $candidate->bio = $data['bio'];*/
-            $candidate->photo = $this->coverPath;
-            /*$candidate->division_id = $this->division->id;
-            if($data['instagram']) $candidate->ig_link = $data['instagram'];
-            if($data['facebook']) $candidate->fb_link = $data['facebook'];
-            if($data['twitter']) $candidate->twitter_link = $data['twitter'];*/
-            $candidate->save();
-
-            $serial = 'SHOSA-'.Str::random(7);
-
-            $this->contest->candidates()->attach($candidate->id, ['paid' => true, 'payment_type' => $type, 'serial' => $serial, 'candidate_number' => $this->candidateNumber]);
-
-
-            $this->fee_payment = false;
-            $this->isLocal = false;
-            $this->isIntl =false;
-            $this->payStatus = false;
-            $this->sAlert('Application Succesful', 'success', 'false', 'center');
-            Session::flash('message_success', 'Application Succesful'); 
-            $this->redirect(route('vote.candidate', $this->contest->slug));
-
-
-        }
+            return $candidate;
     }
 
-    public function callFlutter()
+    public function attachCandidate($candidate)
     {
 
-        //Initialize new variables for Flutter JS
-    	$this->dispatchBrowserEvent('flutterpay', ['nm' => $this->data['name'], 'cr' => $this->currency, 'am' => $this->fee_amount, 'em'=>$this->data['email'], 'des' => $this->contest->name, 'refs' => $this->refs, 'pub' => $this->pub]);
+        $serial = 'SHOSA-S-'.Str::random(7);
+        $this->contest->candidates()->attach($candidate->id, ['serial' => $serial, 'candidate_number' => $this->candidateNumber]);
+        $this->fee_payment = false;
+        $this->sAlert('Application Succesful', 'success', 'false', 'center');
+        Session::flash('message_success', 'Application Succesful'); 
+        $this->redirect(route('vote.candidate', $this->contest->slug));
     }
 
-    public function flutterTrans($data)
-    {
-        $this->flutter_data = $data;
-        if ($data['status'] == 'successful') {
-            $this->sAlert('Application Succesful', 'success', 'false', 'center');
-            $this->payStatus = true;
-            $this->register($this->data,true, 'FLUTTER');
-        } else {
-            Session::flash('message', 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN'); 
-            $this->redirect('/apply');
-        }
-    }
-
-    public function flutterClose()
-    {
-        if($this->flutter_data){
-            if ($this->flutter_data['status'] == 'successful') {
-                $this->sAlert('Application Succesful', 'success', 'false', 'center');
-                Session::flash('message_success', 'Application Succesful'); 
-                $this->redirect('/apply');
-            }
-        }
-        else {
-            Session::flash('message', 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN'); 
-            $this->redirect('/apply');
-        }
-    }
-
-    public function getPaymentType($t)
-    {
-        $this->p_type = $t;
-        if ($t == 1) {
-            $this->dispatchBrowserEvent('tel-number');
-            $this->momo_tel = $this->tel;
-            $this->isLocal = true;
-            $this->isIntl = false;
-        } elseif ($t == 2) {
-             $this->isLocal = false;
-             $this->isIntl = true;
-        } else {
-            abort(403, 'AN ERROR OCCURED');
-        }
-
-    }
 
     public function initiatePay()
     {
+            $ref = 'SHOSA-R'.$this->contestant->id.'-'.Str::random(20);
+            $payment = new Paymooney();
+            $payment_url = $payment->generatePaymentUrl($this->fee_amount, $this->currency, $this->contestant->id, $ref);
+            return redirect($payment_url);
         
-        if($this->p_type == '1')
-        {
-            if (!Network::isOrange($this->momo_tel) && !Network::isMTN($this->momo_tel)) {
-                abort(403, 'INVALID MTN OR ORANGE PHONE NUMBER');
-            } else {
-                $phone = preg_replace('/\s*/m', '', $this->momo_tel);
-                $type = Network::check($phone);
-  
-                $payRequest = new Payment($phone, $this->fee_amount);
-                $pay = $payRequest->pay();
-                if($pay->success){
-                    $this->payStatus = true;
-                    $this->register($this->data,true, $type);
-                } else {
-                   abort(403, 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN');
-                }
-            }
-        } elseif($this->p_type == '2')
-        {
-            $this->callFlutter();
-        } else {
-            abort(403, 'AN ERROR OCCURED WITH THE PAYMENT. PLEASE TRY AGAIN');
-        }
     }
 
     public function sAlert($title, $icon, $toast, $position)
