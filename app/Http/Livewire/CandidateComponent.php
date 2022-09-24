@@ -16,7 +16,8 @@ class CandidateComponent extends Component
     use WithFileUploads;
     public Contest $contest;
     public Candidate $candidate;
-    public $candidates, $data, $coverPath, $name, $bio, $dob, $tel, $cover, $height, $gender, $town, $profession, $slug, $country, $division, $region, $email, $facebook, $instagram, $twitter;
+    public $candidates, $data, $coverPath, $name, $bio, $dob, $tel, $candidate_number, $cover, $height;
+    public $gender, $town, $profession, $slug, $country, $division, $region, $email, $facebook, $instagram, $twitter;
     public $h_unit = "m";
     public $text_words = 50;
     public $editCandidate, $viewCandidate, $showText = false;
@@ -49,7 +50,7 @@ class CandidateComponent extends Component
         $this->viewCandidate = true;
     }
 
-   /* public function openText(Candidate $candidate,$type)
+   public function openText(Candidate $candidate,$type)
     {
         $this->bio = $candidate->bio;
         if($type == 'y')
@@ -63,25 +64,22 @@ class CandidateComponent extends Component
             $this->text_words = 50;
             
         }
-    }*/
+    }
 
     public function openEdit(Candidate $candidate)
     {
         $this->viewCandidate = false;
         $this->slug = $candidate->slug;
         $this->name = $candidate->name;
-        /*$this->bio = $candidate->bio;
+        $this->bio = $candidate->bio;
         $this->email = $candidate->email;
-        $this->division = $candidate->division_id;
+        $this->candidate_number = $candidate->candidate_number;   
         $this->tel = $candidate->tel;
-        $this->dob = $candidate->dob;
         $this->town = $candidate->town;
-        $this->height = Str::remove(['m', 'cm'], $candidate->height);
         $this->gender = $candidate->sex;
-        $this->profession = $candidate->profession;
         $this->facebook = $candidate->fb_link;
         $this->instagram = $candidate->ig_link;
-        $this->twitter = $candidate->twitter_link;*/
+        $this->twitter = $candidate->twitter_link;
         $this->editCandidate = true;
     }
 
@@ -89,19 +87,20 @@ class CandidateComponent extends Component
     {
         $data = $this->validate([
             'name' => 'required',
-            /*'dob' => 'required',
+            //'dob' => 'required',
             'email' => 'required|email',
             'gender' => 'required',
-            'profession' => 'required',
+            //'profession' => 'required',
             'tel' => 'required',
-            'division' => 'required',
-            'height' => 'required',
-            'h_unit' => 'required',
+            //'division' => 'required',
+            //'height' => 'required',
+            //'h_unit' => 'required',
             'bio' => 'required',
             'town' => 'required',
             'instagram' => 'sometimes',
             'facebook' => 'sometimes',
-            'twitter' => 'sometimes'*/
+            'twitter' => 'sometimes',
+            'candidate_number' => 'required'
         ]);
 
         if($this->cover)
@@ -116,18 +115,15 @@ class CandidateComponent extends Component
         
         $candidate->name = $data['name'];
         $candidate->photo = $this->coverPath;
-        /*$candidate->email = $data['email'];
+        $candidate->email = $data['email'];
         $candidate->sex = $data['gender'];
         $candidate->tel = $data['tel'];
-        $candidate->height = $data['height'].$data['h_unit'];
-        $candidate->profession = $data['profession'];
-        $candidate->dob = $data['dob'];
+        $candidate->candidate_number = $data['candidate_number'];
         $candidate->town = $data['town'];
         $candidate->bio = $data['bio'];
-        $candidate->division_id = $data['division'];
         if($data['instagram']) $candidate->ig_link = $data['instagram'];
         if($data['facebook']) $candidate->fb_link = $data['facebook'];
-        if($data['twitter']) $candidate->twitter_link = $data['twitter'];*/
+        if($data['twitter']) $candidate->twitter_link = $data['twitter'];
         $candidate->save();
         $this->editCandidate = false;
 

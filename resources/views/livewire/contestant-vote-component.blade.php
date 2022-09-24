@@ -23,7 +23,7 @@
                     <div wire:click="openCandidate('{{ $cand->slug }}')">
                         <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-full w-full rounded-md" alt="{{$cand->name}}">
                         <div class="my-1 flex justify-center gap-4 py-1 px-1">
-                            <p class="text-sm text-gray-400"><i class="fas fa-birthday-cake"></i> {{ \Carbon\Carbon::parse($cand->dob)->diffForHumans(null,1,true) }}</p>
+                           
                             <p class="text-sm text-gray-400"><i class="fas fa-city"></i> {{ $cand->town }}</p>
                         </div>
                         <div class="p-2 my-1">
@@ -36,6 +36,11 @@
                         <div class="absolute top-0 right-0 h-10 w-18 p-1 bg-secondary text-white">
                             <p class="p-1 font-bold flex items-center justify-center lg:justify-start uppercase text-xl">
                                 <span class="font-bold">{{ number_format($cand->vote_count)}} @if($cand->vote_count > 1 || $cand->vote_count == 0)Votes @else Vote @endif</span>
+                            </p>
+                        </div>
+                        <div class="absolute top-0 left-0 h-10 w-18 p-1 bg-secondary text-white">
+                            <p class="p-1 font-bold flex items-center justify-center lg:justify-start uppercase text-xl">
+                                <span class="font-bold">#{{ $cand->candidate_number }} </span>
                             </p>
                         </div>
                     </div>
@@ -66,32 +71,15 @@
                     <div class="max-w-4xl flex items-center h-auto flex-wrap mx-auto my-32 lg:my-0">
                         
                         <!--Main Col-->
-                        <div class="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-black bg-opacity-75 mx-6 lg:mx-0">
+                        <div class="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none bg-black bg-opacity-75 mx-6 lg:mx-0">
                         
 
                             <div class="p-4 md:p-12 text-center lg:text-left">
                                 <!-- Image for mobile view-->
-                                <div class="block lg:hidden rounded-full shadow-xl object-top mx-auto -mt-16 h-48 w-48 bg-cover bg-center" style="background-image: url('{{Storage::url($candidate->photo)}}')"></div>
+                                <div class="block lg:hidden rounded-full object-top mx-auto -mt-16 h-48 w-48 bg-cover bg-center" style="background-image: url('{{Storage::url($candidate->photo)}}')"></div>
                                 
                                 <h1 class="text-xl font-bold pt-8 lg:pt-0 text-secondary text-left uppercase">{{ $candidate->name }}</h1>
-                                <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
-                                
-                                <div class="text-md text-left">
-                                    <p>
-                                        Date of Birth: {{ $candidate->dob }}
-                                    </p>
-                                    {{--<p>
-                                        Division of Origin: {{ $candidate->division->name }}
-                                    </p>--}}
-                                    <p>
-                                        Height: {{ $candidate->height }}
-                                    </p>
-                                    <p>
-                                        Profession: {{ $candidate->profession }}
-                                    </p>
-                                   
-                                </div>
-                                <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
+
                                 <p class="pt-8 text-sm">
                                     {{ Str::words($candidate->bio, $text_words , '...') }}
                                     @if(!$showText)
@@ -122,9 +110,9 @@
                         </div>
 
                         <!-- Pin to top right corner -->
-                        <div class="absolute top-0 right-0 h-12 w-18 p-4">
-                            <p class="pt-4 font-bold flex items-center justify-center lg:justify-start uppercase text-3xl">
-                               
+                        <div class="absolute top-0 right-0 h-12 w-18 p-1">
+                            <p class="p-2 font-bold flex items-center justify-center lg:justify-start uppercase text-3xl">
+                                <span class="font-bold">#{{ $cand->candidate_number }} </span>
                             </p>
                         </div>
 

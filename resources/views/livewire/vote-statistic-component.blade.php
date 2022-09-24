@@ -37,7 +37,7 @@
                                         <img class="h-10 w-10 rounded-full object-cover object-top" src="{{Storage::url($cand->photo)}}" alt="">
                                     </div>
                                     <div>
-                                        <div class="text-sm text-secondary">{{$cand->name}}</div>
+                                        <div class="text-sm text-secondary">#{{ $cand->candidate_number }} - {{$cand->name}}</div>
                                         
                                     </div>
                                 </div>

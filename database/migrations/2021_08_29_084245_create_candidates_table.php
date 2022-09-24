@@ -20,20 +20,16 @@ class CreateCandidatesTable extends Migration
             $table->string('email')->nullable();
             $table->string('sex');
             $table->string('tel')->nullable();
-            $table->date('dob')->nullable();
-            $table->string('height')->nullable();
-            $table->string('profession')->nullable();
+            $table->string('candidate_number')->nullable();
             $table->string('photo')->nullable();
             $table->string('town')->nullable();
             $table->text('reason_for_participation')->nullable();
             $table->text('bio')->nullable();
             $table->string('ig_link')->nullable();
             $table->string('fb_link')->nullable();
-            $table->string('twitter_link')->nullable();
-            //$table->unsignedBigInteger('division_id');
+            $table->string('twitter_link')->nullable();        
             $table->timestamps();
 
-            //$table->foreign('division_id')->references('id')->on('divisions');
         });
     }
 

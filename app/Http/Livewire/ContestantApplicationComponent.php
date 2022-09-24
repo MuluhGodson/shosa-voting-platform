@@ -21,7 +21,7 @@ class ContestantApplicationComponent extends Component
     use WithFileUploads;
     public $data, $coverPath, $candidateNumber, $refs, $p_type, $fee, $momo_tel, $name, $bio, $dob, $tel;
     public $cover, $height, $gender, $town, $profession, $slug, $country, $division, $region, $email, $facebook;
-    public $instagram, $twitter, $currencies, $fee_amount, $currency, $contestant;
+    public $instagram, $twitter, $currencies, $fee_amount, $currency, $contestant, $candidate_number;
     public Contest $contest;
     public $h_unit = "m";
     public $fee_payment, $isLocal, $isIntl, $payStatus = false;
@@ -65,24 +65,26 @@ class ContestantApplicationComponent extends Component
     public function apply(Contest $contest)
     {
         $totCandidates = $contest->loadCount('candidates')->candidates_count;
-        $this->candidateNumber = $totCandidates + 1;
+      
         $this->data = $this->validate([
             'name' => 'required',
-            'dob' => 'required',
+            //'dob' => 'required',
             'email' => 'required|email',
             'gender' => 'required',
-            'profession' => 'required',
+            //'profession' => 'required',
             'tel' => 'required',
             'cover' => 'required|image',
             /*'division' => 'required',*/
-            'height' => 'required',
-            'h_unit' => 'required',
+            //'height' => 'required',
+            //'h_unit' => 'required',
             'bio' => 'required',
             'town' => 'required',
             'instagram' => 'sometimes',
             'facebook' => 'sometimes',
-            'twitter' => 'sometimes'
+            'twitter' => 'sometimes',
+            'candidate_number' => 'required'
         ]);
+        $this->candidateNumber = $this->data['candidate_number'];
 
         $coverExt = $this->cover->getClientOriginalExtension();
         $coverName = Str::random(10).'.'.$coverExt;
@@ -109,9 +111,10 @@ class ContestantApplicationComponent extends Component
             $candidate->email = $data['email'];
             $candidate->sex = $data['gender'];
             $candidate->tel = $data['tel'];
-            $candidate->height = $data['height'].$data['h_unit'];
-            $candidate->profession = $data['profession'];
-            $candidate->dob = $data['dob'];
+            $candidate->candidate_number = $data['candidate_number'];
+            //$candidate->height = $data['height'].$data['h_unit'];
+            //$candidate->profession = $data['profession'];
+            //$candidate->dob = $data['dob'];
             $candidate->town = $data['town'];
             $candidate->bio = $data['bio'];
             $candidate->photo = $this->coverPath;

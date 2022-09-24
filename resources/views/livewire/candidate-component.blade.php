@@ -20,7 +20,7 @@
                         </div>
                         <div class="p-2 my-1">
                             <h1 class="text-center text-lg text-secondary font-bold uppercase">
-                                <span class="text-gray-300">#{{ $cand->id }}</span> {{ $cand->name }}
+                                <span class="text-gray-300">#{{ $cand->candidate_number }}</span> {{ $cand->name }}
                             </h1>
                            {{-- <pclass="text-gray-400text-center">Str::words($cand->bio,15,'...') --}}
                         </div>
@@ -69,19 +69,7 @@
                                 <h1 class="text-xl font-bold pt-8 lg:pt-0 text-secondary text-left uppercase">{{ $candidate->name }}</h1>
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
                                 
-                               {{-- <div class="text-md text-left">
-                                    <p>
-                                        Date of Birth: {{ $candidate->dob }}
-                                    </p>
-                                    <p>
-                                        Division of Origin: {{ $candidate->division->name }}
-                                    </p>
-                                    <p>
-                                        Height: {{ $candidate->height }}
-                                    </p>
-                                    <p>
-                                        Profession: {{ $candidate->profession }}
-                                    </p>
+                               <div class="text-md text-left">
                                     <p>
                                         Email: {{ $candidate->email }}
                                     </p>
@@ -89,16 +77,16 @@
                                         Tel: {{ $candidate->tel }}
                                     </p>
                                    
-                                </div>--}}
+                                </div>
                                 <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-gray-500 opacity-25"></div>
-                                 {{--<p class="pt-8 text-sm">
+                                 <p class="pt-8 text-sm">
                                    {{ Str::words($candidate->bio, $text_words , '...') }}
                                     @if(!$showText)
                                         <button wire:click="openText('{{ $candidate->slug }}','y')" class="bg-transparent text-secondary font-bold">See all</button>
                                     @else
                                         <button wire:click="openText('{{ $candidate->slug }}','n')" class="bg-transparent text-secondary font-bold">See less</button>
                                     @endif
-                                </p>--}}
+                                </p>
 
                                 <div class="pt-12 pb-8">
                                     <a href="" class="bg-secondary hover:bg-transparent hover:border hover:border-secondary hover:text-secondary text-white font-bold py-2 px-4 rounded-full">
@@ -123,12 +111,12 @@
                         <!-- Pin to top right corner -->
                         <div class="absolute top-0 right-0 h-12 w-18 p-4">
                             <p class="pt-4 font-bold flex items-center justify-center lg:justify-start uppercase text-3xl">
-                               #<span class="text-secondary"> {{ $candidate->id }}</span>
+                               #<span class="text-secondary"> {{ $candidate->candidate_number }}</span>
                             </p>
                         </div>
 
                         <!-- Pin to left corner -->
-                        {{--@if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
+                        @if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
                         <div class="absolute top-0 left-0 h-10 w-18 p-1 text-white">
                             <div class="flex justify-center gap-1 text-sm p-2">
                                 @if($candidate->fb_link)
@@ -142,7 +130,7 @@
                                 @endif
                             </div>
                         </div>
-                        @endif--}}
+                        @endif
                         
 
                     </div>
@@ -187,7 +175,7 @@
                 <x-jet-input id="name" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="name" type="text" name="name" :value="old('name')" required />
             </div>
 
-            {{--<div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
+            <div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
                 <div class="mt-2">
                     <x-jet-label class="font-bold" for="currency" value="{{ __('Gender') }}" />
                     <select wire:model="gender" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
@@ -197,47 +185,34 @@
                     </select>
                 </div>
                 <div class="mt-2">
-                    <x-jet-label class="font-bold" for="dob" value="{{ __('Date of Birth') }}" />
-                    <x-jet-input id="dob" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="dob" type="date" name="dob" :value="old('dob')" required />
+                    <x-jet-label class="font-bold" for="candidatenum" value="{{ __('Candidate Number') }}" />
+                    <x-jet-input id="candidate_number" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="candidate_number" type="text" name="candidate_number" :value="old('candidate_number')" required />
+                </div>
+
+            </div>
+
+            <div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
+                <div class="mt-4">
+                    <x-jet-label class="font-bold" for="email" value="{{ __('Email') }}" />
+                    <x-jet-input id="email" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="email" type="text" name="email" :value="old('email')" required />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label class="font-bold" for="tel" value="{{ __('Telephone') }}" />
+                    <x-jet-input id="tel" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="tel" type="text" name="tel" :value="old('tel')" required />
                 </div>
             </div>
 
-            <div class="mt-4">
-                 <x-jet-label class="font-bold" for="pob" value="{{ __('Division of Origin') }}" />
-                 <livewire:utils.location :lt="$division"/>
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="email" type="text" name="email" :value="old('email')" required />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="tel" value="{{ __('Telephone') }}" />
-                <x-jet-input id="tel" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="tel" type="text" name="tel" :value="old('tel')" required />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="height" value="{{ __('Height') }}" />
-                <div class="flex flex-row gap-4 justify-between">
-                    <x-jet-input id="height" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="height" type="text" name="height" :value="old('height')" required />
-                    <select wire:model="h_unit" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
-                        <option value="m">m</option>
-                        <option value="cm">cm</option>
-                    </select>
-                </div>
-            </div>
 
             <div class="mt-4">
                 <x-jet-label class="font-bold" for="bio" value="{{ __('Bio') }}" />
-                <small class="text-gray-500">Tell us about yourself</small>
-                <textarea cols="50" wire:model="bio" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
+                <small class="text-gray-500">Tell us about yourself. (max 1000 characters)</small>
+                <div class="bg-gray-100 rounded">
+                    <textarea rows="10" maxlength="1000" wire:model="bio" class="summernote block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
+                </div>
+                <small class="text-right text-gray-400" id="charCount"></small>
             </div>
 
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="profession" value="{{ __('Profession') }}" />
-                <x-jet-input id="profession" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="profession" type="text" name="profession" :value="old('profession')" required />
-            </div>
 
             <div class="mt-4">
                 <x-jet-label class="font-bold" for="town" value="{{ __('Town') }}" />
@@ -265,7 +240,7 @@
                     <small class="text-gray-500"><i class="fab fa-twitter"></i> Link to your Twitter account </small>
                     <x-jet-input id="twitter" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="twitter" type="text" name="twitter" :value="old('twitter')" required />
                 </div>
-            </div>--}}
+            </div>
 
 
             <div class="my-4">

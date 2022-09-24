@@ -26,36 +26,24 @@
                     </select>
                 </div>
                 <div class="mt-2">
-                    <x-jet-label class="font-bold" for="dob" value="{{ __('Date of Birth') }}" />
-                    <x-jet-input id="dob" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="dob" type="date" name="dob" :value="old('dob')" required />
+                    <x-jet-label class="font-bold" for="candidatenum" value="{{ __('Candidate Number') }}" />
+                    <x-jet-input id="candidate_number" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="candidate_number" type="text" name="candidate_number" :value="old('candidate_number')" required />
+                </div>
+
+            </div>
+
+            <div class="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4 justify-between">
+                <div class="mt-4">
+                    <x-jet-label class="font-bold" for="email" value="{{ __('Email') }}" />
+                    <x-jet-input id="email" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="email" type="text" name="email" :value="old('email')" required />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label class="font-bold" for="tel" value="{{ __('Telephone') }}" />
+                    <x-jet-input id="tel" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="tel" type="text" name="tel" :value="old('tel')" required />
                 </div>
             </div>
 
-           {{-- <div class="mt-4">
-                 <x-jet-label class="font-bold" for="pob" value="{{ __('Division of Origin') }}" />
-                 <livewire:utils.location :lt="null"/>
-            </div> --}}
-
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="email" type="text" name="email" :value="old('email')" required />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="tel" value="{{ __('Telephone') }}" />
-                <x-jet-input id="tel" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="tel" type="text" name="tel" :value="old('tel')" required />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="height" value="{{ __('Height') }}" />
-                <div class="flex flex-row gap-4 justify-between">
-                    <x-jet-input id="height" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="height" type="text" name="height" :value="old('height')" required />
-                    <select wire:model="h_unit" class="block mt-1 w-full border-gray-400 text-gray-800 focus:outline-none focus:ring focus:border-secondary focus:ring-secondary focus:ring-opacity-50 rounded-md shadow-sm">
-                        <option value="m">m</option>
-                        <option value="cm">cm</option>
-                    </select>
-                </div>
-            </div>
 
             <div class="mt-4">
                 <x-jet-label class="font-bold" for="bio" value="{{ __('Bio') }}" />
@@ -66,10 +54,6 @@
                 <small class="text-right text-gray-400" id="charCount"></small>
             </div>
 
-            <div class="mt-4">
-                <x-jet-label class="font-bold" for="profession" value="{{ __('Profession') }}" />
-                <x-jet-input id="profession" class="block mt-1 w-full border-gray-400 text-gray-800" wire:model="profession" type="text" name="profession" :value="old('profession')" required />
-            </div>
 
             <div class="mt-4">
                 <x-jet-label class="font-bold" for="town" value="{{ __('Town') }}" />
