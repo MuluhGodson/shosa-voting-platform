@@ -16,8 +16,8 @@ class ContestComponent extends Component
     public $createContest, $editContest, $viewContest, $showText = false;
     public $text_words = 50;
     public $active = true;
-    public $fee = true;
-    public $tarrif = true;
+    public $fee = false;
+    public $tarrif = false;
     public $vote_count = 1;
     public $name, $description, $amount, $b_date, $e_date, $cover, $contests, $currency, $currencies, $vote_fee, $event_photo, $slug;
     public Contest $contest;
@@ -141,10 +141,10 @@ class ContestComponent extends Component
         $contest->fee = $data['fee'];
         $contest->active = $data['active'];
         $contest->currency = $data['currency'];
-        $contest->fee_amount = preg_replace( '/[^0-9]/', '', $data['amount']);
+        $contest->fee_amount = $data['amount'];
         $contest->vote_tarrif = $data['tarrif'];
         $contest->vote_count = $data['vote_count'];
-        $contest->vote_fee = preg_replace( '/[^0-9]/', '', $data['vote_fee']);
+        $contest->vote_fee = $data['vote_fee'];
         $contest->description = Purifier::clean($data['description']);
         $contest->beginning_date = $data['b_date'];
         $contest->ending_date = $data['e_date'];
@@ -199,14 +199,14 @@ class ContestComponent extends Component
         if($this->fee)
         {
            $amount = $this->validate(['amount' => 'required|numeric']);
-           $contest->fee_amount = preg_replace( '/[^0-9]/', '', $amount['amount']);
+           $contest->fee_amount = $amount['amount'];
         }
 
         if($this->tarrif)
         {
             $vote = $this->validate(['vote_fee' => 'required|numeric', 'vote_count' => 'required|numeric']);
             $contest->vote_count = $vote['vote_count'];
-            $contest->vote_fee = preg_replace( '/[^0-9]/', '', $vote['vote_fee']);
+            $contest->vote_fee = $vote['vote_fee'];
         }
 
         $contest->save();
