@@ -22,9 +22,9 @@ class DashboardComponent extends Component
             ->setTitle('Voting Stats')
             ->setAnimated(true)
             ->addColumn(0, '10', '#f6ad55');
-        if($contest)
+        $candidates = $contest->candidates->toArray();
+        if($contest && $candidates)
         {
-            $candidates = $contest->candidates->toArray();
             $count = count($candidates);
             $generalStat =
                 (new ColumnChartModel())
