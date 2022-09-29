@@ -3,6 +3,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\Http;
 use App\Models\Utils\Currency;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class Paymooney {
     private $paymooneyPublicKey;
@@ -38,4 +39,12 @@ class Paymooney {
             abort(403, "An error occured. Please Try again");
         }
     }
+
+    public function checkIfPaymentValid($ip,$sign_token){
+        if (hash_equals($sign_token, crypt($this->paymooneyPrivateKey, $sign_token))) {
+           if($ip=="199.59.247.243" || $ip=="199.59.247.250" )
+             return true;
+         }
+         return false;
+     }
 }

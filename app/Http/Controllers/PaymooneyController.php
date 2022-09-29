@@ -12,28 +12,37 @@ use App\Models\Vote;
 use App\Models\PayRequest;
 use Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Helpers\Paymooney;
 
 class PaymooneyController extends Controller
 {
     public function notify(Request $request)
     {
         Log::debug($request);
-        $this->extractInfo($request);
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $Payment = new Paymooney();
+        $validPayment = $Payment->checkIfPaymentValid($ip,$request->sign_token);
+        if($validPayment)
+        {
+            $this->extractInfo($request);
+        } else {
+            abort(401);
+        }
     }
 
-    public function success(Request $request)
+    public function success()
     {
-        Log::debug('success: '.$request);
+        return view('user.success');
     }
+
+    
+     
 
     function extractInfo($data)
     {
         $extract_refs= Str::of($data['item_ref'])->between('-', '-');
         $first_letter = Str::substr($extract_refs,0,1);
         $id = Str::after($extract_refs,$first_letter);
-        Log::debug($extract_refs);
-        Log::debug($first_letter);
-        Log::debug($id);
         if($first_letter == 'R')
         {
             $this->attachCandidate($data, $id);
