@@ -29,7 +29,7 @@ class Paymooney {
             'item_name' => 'Shosa Payment',
             'public_key' => config('paymooney.public'),
             //'logo' => asset('images/logo/mffa.png'),
-            'environement' => 'test'
+            //'environement' => 'test'
         ]);
 
         if($response["response"] == "success")
