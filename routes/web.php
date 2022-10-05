@@ -24,7 +24,7 @@ use App\Http\Controllers\PaymooneyController;
     Route::get('/apply/{contest}', [PageController::class, 'application'])->name('candidate.apply');
     Route::get('/vote', [VoteController::class, 'index'])->name('vote');
     Route::get('/vote/{contest}', [VoteController::class, 'show'])->name('vote.candidate');
-    Route::get('vote/{contest}/{candidate}', [VoteController::class, 'candidateVote'])->name('candidate.vote');
+    Route::get('/v/{contest}/{candidate}', [VoteController::class, 'candidate'])->name('candidate.vote');
 
     // Paymooney
     Route::prefix('paymooney')->group(function () {

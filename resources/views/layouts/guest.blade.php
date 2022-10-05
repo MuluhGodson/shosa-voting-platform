@@ -8,7 +8,7 @@
         <script>
             AOS.init();
         </script>
-        <div class="min-h-screen bg-black">
+        <div class="min-h-screen bg-gradient-to-r from-purple-500 to-pink-500">
             <div class="flex max-w-7xl mx-auto">
                {{-- <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">

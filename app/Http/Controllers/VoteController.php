@@ -22,6 +22,11 @@ class VoteController extends Controller
         return view('user.vote.show', compact('contest'));
     }
 
+    public function candidate(Contest $contest, Candidate $candidate)
+    {
+        return view('user.vote.candidate', compact('contest', 'candidate'));
+    }
+
     public function statistics()
     {
         $contest = Contest::where('active',true)->first();
