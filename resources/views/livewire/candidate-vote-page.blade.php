@@ -21,9 +21,15 @@
                     </div>
 
                     <p class="py-5 text-white">
-                        {{ $candidate->bio }} 
-                    </p>'
-                    
+                        {{ Str::words($candidate->bio, $text_words , '...') }}
+                         @if(!$showText)
+                             <button wire:click="openText('{{ $candidate->slug }}','y')" class="bg-transparent text-secondary font-bold">See all</button>
+                         @else
+                             <button wire:click="openText('{{ $candidate->slug }}','n')" class="bg-transparent text-secondary font-bold">See less</button>
+                         @endif
+                     </p>
+
+                
 
                     @if($candidate->fb_link || $candidate->ig_link || $candidate->twitter_link)
                         <div class="flex justify-center gap-1 text-sm px-5">

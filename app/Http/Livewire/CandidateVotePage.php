@@ -61,7 +61,7 @@ class CandidateVotePage extends Component
         }
         else {
             $this->showText = false;
-            $this->text_words = 50;
+            $this->text_words = 15;
             
         }
     }
