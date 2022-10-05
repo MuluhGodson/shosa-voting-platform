@@ -14,7 +14,7 @@
     @endif
 
     <div class="my-8">
-        <h1 class="text-center text-xl md:text-4xl text-gray-300"> Vote your favorite contestant for <span class="text-secondary uppercase font-bold">{{ $contest->name }}</span> </h1>
+        <h1 class="text-center text-xl md:text-4xl text-gray-300"> Vote your favorite contestant for <span class="text-white uppercase font-bold">{{ $contest->name }}</span> </h1>
     </div>
     <div class="my-4">
         <div class="grid md:grid-cols-3 grid-cols-1 gap-4">
@@ -22,7 +22,7 @@
                 <a href="{{ route('candidate.vote', ['contest'=>$contest, 'candidate' => $cand]) }}">
                     <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000" class="shadow-lg rounded transition hover:px-1 duration-500 ease-in-out  col hover:border-r-2 hover:boder-r-white hover:border-l-2 hover:border-l-secondary cursor-pointer hover:transform hover:scale-150">
                     
-                        <div>
+                        <div class="bg-black">
                             <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-full w-full rounded-md" alt="{{$cand->name}}">
                             <div class="my-1 flex justify-center gap-4 py-1 px-1">
                             
@@ -45,11 +45,12 @@
                                     <span class="font-bold">#{{ $cand->candidate_number }} </span>
                                 </p>
                             </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-center content-end p-3">
-                                <div>
-                                    <button class="rounded px-2 py-2 bg-transparent border border-secondary text-secondary font-semibold hover:bg-secondary hover:text-gray-400" wire:click="openVote('{{ $cand->slug }}')">Vote</button>
+                        
+                            <div>
+                                <div class="flex justify-center content-end p-3">
+                                    <div>
+                                        <button class="rounded px-2 py-2 bg-transparent border border-secondary text-secondary font-semibold hover:bg-secondary hover:text-gray-400" wire:click="openVote('{{ $cand->slug }}')">Vote</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
