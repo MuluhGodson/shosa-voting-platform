@@ -1,6 +1,6 @@
 <div>
 
-    <div class="flex flex-col sm:justify-center items-center bg-black">
+    <div class="flex flex-col sm:justify-center items-center">
         <div>
             <x-jet-authentication-card-logo />
         </div>
