@@ -19,7 +19,7 @@
     <div class="my-4">
         <div class="grid md:grid-cols-3 grid-cols-1 gap-4">
             @forelse ($candidates->sortByDesc('vote_count') as $cand)
-                <a href="{{ route('candidate.vote', ['contest'=>$contest, 'candidate' => $cand]) }}">
+                <a class="my-5" href="{{ route('candidate.vote', ['contest'=>$contest, 'candidate' => $cand]) }}">
                     <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000" class="shadow-lg rounded transition hover:px-1 duration-500 ease-in-out  col hover:border-r-2 hover:boder-r-white hover:border-l-2 hover:border-l-secondary cursor-pointer hover:transform hover:scale-150">
                     
                         <div class="bg-black">
