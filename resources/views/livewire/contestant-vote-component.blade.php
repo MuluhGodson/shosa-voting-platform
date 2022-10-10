@@ -23,7 +23,7 @@
                     <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000" class="shadow-lg rounded transition hover:px-1 duration-500 ease-in-out  col hover:border-r-2 hover:boder-r-white hover:border-l-2 hover:border-l-secondary cursor-pointer hover:transform hover:scale-150">
                     
                         <div class="bg-black">
-                            <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-full w-full rounded-md" alt="{{$cand->name}}">
+                            <img src="{{Storage::url($cand->photo)}}" class="object-cover object-top h-96 w-full rounded-md" alt="{{$cand->name}}">
                             <div class="my-1 flex justify-center gap-4 py-1 px-1">
                             
                                 <p class="text-sm text-gray-400"><i class="fas fa-city"></i> {{ $cand->town }}</p>
@@ -37,7 +37,7 @@
                             <!-- Pin to right corner -->
                             <div class="absolute top-0 right-0 h-10 w-18 p-1 bg-secondary text-white">
                                 <p class="p-1 font-bold flex items-center justify-center lg:justify-start uppercase text-xl">
-                                    <span class="font-bold">{{ number_format($cand->vote_count)}} @if($cand->vote_count > 1 || $cand->vote_count == 0)Votes @else Vote @endif</span>
+                                    <span class="font-bold">{{ number_format($cand->vote_count)}}% votes</span>
                                 </p>
                             </div>
                             <div class="absolute top-0 left-0 h-10 w-18 p-1 bg-secondary text-white">
