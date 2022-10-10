@@ -39,8 +39,10 @@ class ContestantVoteComponent extends Component
     {
         $candidates = $this->contest->candidates;
         $cands = $candidates->transform(function ($cand, $key) {
+            $total_votes = Vote::where('contest_id',$this->contest->id)->sum('vote_count');
+            $total_votes = $total_votes == 0 ? 1 : $total_votes;
             $vote_number = $cand->votes()->sum('vote_count');
-            $cand->vote_count = $vote_number;
+            $cand->vote_count = ($vote_number/$total_votes) * 100;
             return $cand;
         });
         $this->candidates = $cands;
