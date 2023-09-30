@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contest;
-use Acaronlex\LaravelCalendar\Event;
-use Acaronlex\LaravelCalendar\Calendar;
 
 
 class PageController extends Controller
@@ -41,31 +39,7 @@ class PageController extends Controller
             }
         }
        
-        $calendar = new Calendar();
-        $i = count($contests);
-        if($i > 0)
-        {
-            for($j = 0; $j < $i; $j++)
-            {
-                $events[] = $calendar::event(
-                    $cName[$j], //event title
-                    true, //full day event?
-                    $cbDate[$j], //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-                    $ceDate[$j], //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                    1, //optional event ID
-                    [
-                        'url' => route('contest.index')
-                    ]
-                );
-            }
-        } else {
-            $events = [];
-        }
-       
-        $calendar->addEvents($events);
-        $calendar->setId('1');
-
-        return view('dashboard', compact('calendar'));
+        return view('dashboard');
     }
 
     public function finance()

@@ -28,7 +28,7 @@ class VoteStatisticComponent extends Component
             $vote_number = $cand->votes()->sum('vote_count');
             $vote_money = $cand->votes()->sum('amount');
             $cand->vote_count = $vote_number;
-            $cand->vote_amount = $vote_money;
+            $cand->vote_amount = $vote_number * $this->contest->vote_fee;
             return $cand;
         });
         $this->candidates = $cands;
